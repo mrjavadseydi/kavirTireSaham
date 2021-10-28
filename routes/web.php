@@ -13,10 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/',\App\Http\Livewire\LoginIndex::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+Route::view('/vv','excel.upload');
+Route::post('/testExcel',function (\Illuminate\Http\Request $request){
+//        dd($request->has('file'));
+//        dd($request->file);
+        $filename = uniqid().".".$request->file('file')->extension();
+        $request->file('file')->move(public_path('/up'),$filename);
+        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport,public_path('/up')."/".$filename);
+
+})->name('ex');
