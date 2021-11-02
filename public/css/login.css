@@ -239,3 +239,7 @@ html, body {
 *{
     font-family: 'Vazir', sans-serif;
 }
+
+.select{
+    height: 40px !important;
+}

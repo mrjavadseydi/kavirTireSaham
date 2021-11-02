@@ -9,9 +9,13 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
 
     <link href="{{asset('css/login.css')}}" rel="stylesheet" >
+    @livewireStyles
 </head>
 <body>
 {{$slot}}
+@livewireScripts
 <script src="{{asset('js/login.js')}}"></script>
+<script src="{{ mix('js/app.js') }}" defer></script>
+
 </body>
 </html>
