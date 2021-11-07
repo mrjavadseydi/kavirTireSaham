@@ -30,3 +30,7 @@ Route::post('/testExcel',function (\Illuminate\Http\Request $request){
 Route::prefix('panel')->middleware('AcoountLogin')->group(function (){
     Route::get('/',\App\Http\Livewire\User\Panel::class)->name('user.panel');
 });
+Route::get('/logout',function(){
+    session()->flush();
+    return redirect(url('/'));
+});
