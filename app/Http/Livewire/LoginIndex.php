@@ -7,18 +7,17 @@ use Livewire\Component;
 
 class LoginIndex extends Component
 {
-    public $type;
-    public $stock_number;
-    public $accounts;
-    public $stock_alpha;
     public $step = 0;
-    public $meta;
-    public $name;
-    public $account_id;
-    public $msg;
-    public $cert;
-    public $how = "cert_id";
+    public $signup_step = 0;
 
+    public $how = "cert_id";
+    public $type,$stock_number,$accounts, $stock_alpha,$meta,$name,$account_id,$msg,$cert;
+    public $certificate,$fname ,$lname,$father,$phone,$mobile,$cert_id,$st_num,$st_alp,$nat_id,$address,$post_code;
+    public function alert()
+    {
+        $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'لطفا یک گزینه را انتخاب نمایید']);
+
+    }
     public function login()
     {
         if ($this->step == 0) {
@@ -33,7 +32,7 @@ class LoginIndex extends Component
             shuffle($this->meta['stock_alpha']);
         } elseif ($this->step == 1) {
             if (!$this->stock_alpha) {
-                $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'لطفا یک گزینه را انتخاب نمایید']);
+                $this->alert();
             } else {
                 $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', $this->stock_alpha]])->get();
                 $this->step++;
@@ -55,7 +54,7 @@ class LoginIndex extends Component
 
         } elseif ($this->step == 2) {
             if (!$this->account_id) {
-                $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'لطفا یک گزینه را انتخاب نمایید']);
+                $this->alert();
             } else {
                 $this->step++;
                 $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', $this->stock_alpha], ['id', $this->account_id]])->first();
@@ -86,7 +85,7 @@ class LoginIndex extends Component
 
         } else {
             if (!$this->cert) {
-                $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'لطفا یک گزینه را انتخاب نمایید']);
+                $this->alert();
             } else {
                 if ($this->how == "cert_id") {
                     $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', $this->stock_alpha], ['id', $this->account_id], ['certificate_id', 'like', $this->cert]])->first();
@@ -95,6 +94,13 @@ class LoginIndex extends Component
                 }
                 if ($this->accounts) {
                     session(['account' => $this->accounts]);
+                    $this->dispatchBrowserEvent('toast', ['type' => 'success', 'msg' => 'ورود موفق']);
+                    $this->accounts->update([
+                        'has_login'=>true,
+                        'last_login'=>date('Y-m-d H:i:s'),
+                        'last_ip'=>request()->ip()
+                    ]);
+                    return $this->redirect(route('user.panel'));
                 } else {
                     $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'کاربر مورد نظر پیدا نشد']);
                     $this->step = 0;
@@ -107,6 +113,11 @@ class LoginIndex extends Component
 
     public function render()
     {
-        return view('welcome', ['step' => $this->step, 'meta' => $this->meta, 'msg' => $this->msg])->layout('layouts.login');
+        return view('welcome', [
+            'step' => $this->step,
+            'meta' => $this->meta,
+            'msg' => $this->msg,
+            'signup'=>$this->signup_step
+        ])->layout('layouts.login');
     }
 }

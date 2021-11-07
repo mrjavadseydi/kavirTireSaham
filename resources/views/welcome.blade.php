@@ -2,7 +2,7 @@
     <div class="signup">
         <h2 class="form-title" id="signup">
             @if($step==0)
-                بخش عددی کد بورسی خود را انتخاب کنید
+                ورود به سامانه سهام
 
             @elseif ($step==1)
                 بخش حرفی کد بورسی خود را انتخاب کنید
@@ -57,10 +57,24 @@
         <div class="center">
             <h2 class="form-title" id="login">ثبت نام</h2>
             <div class="form-holder">
-                <input type="email" class="input" placeholder="Email"/>
-                <input type="email" class="input" placeholder="Email"/>
-                <input type="email" class="input" placeholder="Email"/>
-                <input type="password" class="input" placeholder="Password"/>
+                @if($signup==0)
+                    <input type="text" class="input" placeholder="نام"/>
+                    <input type="text" class="input" placeholder="نام خانوادگی"/>
+                    <input type="text" class="input" placeholder="کد سهامدار"/>
+                    <input type="text" class="input" placeholder="نام پدر"/>
+                    <input type="text" class="input" placeholder="کد ملی"/>
+                @elseif($step==1)
+                    <input type="text" class="input" placeholder="تلفن ثابت"/>
+                    <input type="text" class="input" placeholder="موبایل"/>
+                    <input type="text" class="input" placeholder="بخش عددی کد بورسی"/>
+                    <input type="text" class="input" placeholder="بخش حرفی کد بورسی"/>
+                    <input type="text" class="input" placeholder="کد پستی"/>
+                    <input type="text" class="input" placeholder="کد پستی"/>
+                @else
+                    <input type="text" class="input" placeholder="کد پستی"/>
+                    <input type="text" class="input" placeholder="کد پستی"/>
+                    <input type="text" class="input" placeholder="Password"/>
+                @endif
             </div>
             <button class="submit-btn">ثبت نام</button>
         </div>

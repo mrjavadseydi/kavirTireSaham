@@ -26,3 +26,7 @@ Route::post('/testExcel',function (\Illuminate\Http\Request $request){
         \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport,public_path('/up')."/".$filename);
 
 })->name('ex');
+
+Route::prefix('panel')->middleware('AcoountLogin')->group(function (){
+    Route::get('/',\App\Http\Livewire\User\Panel::class)->name('user.panel');
+});
