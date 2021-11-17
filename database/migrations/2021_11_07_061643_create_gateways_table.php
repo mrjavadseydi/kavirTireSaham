@@ -19,6 +19,7 @@ class CreateGatewaysTable extends Migration
             $table->bigInteger('gateway_amount')->default(0);
             $table->text('token');
             $table->string('tracking_number');
+            $table->string('order_number');
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

@@ -53,30 +53,32 @@
         </form>
 
     </div>
-    <div class="login slide-up">
+    <div class="login {{$signup_step==0?"slide-up":''}}">
         <div class="center">
-            <h2 class="form-title" id="login">ثبت نام</h2>
+            <h2 class="form-title" id="login" wire:click="activeSignup">ثبت نام</h2>
             <div class="form-holder">
-                @if($signup==0)
-                    <input type="text" class="input" placeholder="نام"/>
-                    <input type="text" class="input" placeholder="نام خانوادگی"/>
-                    <input type="text" class="input" placeholder="کد سهامدار"/>
-                    <input type="text" class="input" placeholder="نام پدر"/>
-                    <input type="text" class="input" placeholder="کد ملی"/>
-                @elseif($step==1)
-                    <input type="text" class="input" placeholder="تلفن ثابت"/>
-                    <input type="text" class="input" placeholder="موبایل"/>
-                    <input type="text" class="input" placeholder="بخش عددی کد بورسی"/>
-                    <input type="text" class="input" placeholder="بخش حرفی کد بورسی"/>
-                    <input type="text" class="input" placeholder="کد پستی"/>
-                    <input type="text" class="input" placeholder="کد پستی"/>
+                @if($signup_step==1)
+                    <input type="text" class="input"  wire:model="fname" placeholder="نام"/>
+                    <input type="text" class="input"  wire:model="lname" placeholder="نام خانوادگی"/>
+                    <input type="text" class="input"  wire:model="certificate" placeholder="کد سهامدار"/>
+                    <input type="text" class="input"  wire:model="father" placeholder="نام پدر"/>
+                    <input type="text" class="input"  wire:model="nat_id" placeholder="کد ملی"/>
+                @elseif($signup_step==2)
+                    <input type="text" class="input" wire:model="phone" placeholder="تلفن ثابت"/>
+                    <input type="text" class="input" wire:model="mobile" placeholder="موبایل"/>
+                    <input type="text" class="input" wire:model="st_num" placeholder="بخش عددی کد بورسی"/>
+                    <input type="text" class="input" wire:model="st_alp" placeholder="بخش حرفی کد بورسی"/>
                 @else
-                    <input type="text" class="input" placeholder="کد پستی"/>
-                    <input type="text" class="input" placeholder="کد پستی"/>
-                    <input type="text" class="input" placeholder="Password"/>
+                    <input type="text" class="input" wire:model="stock_count" placeholder="تعداد سهام حق تقدم"/>
+                    <input type="text" class="input" wire:model="cert_id" placeholder="شماره شناسنامه"/>
+                    <input type="text" class="input" wire:model="address" placeholder="ادرس پستی"/>
+                    <input type="text" class="input" wire:model="post_code" placeholder="کد پستی"/>
                 @endif
             </div>
-            <button class="submit-btn">ثبت نام</button>
+            <button class="submit-btn" wire:click="signup">مرحله بعد</button>
+            @if ($signup_step>1)
+                <button class="submit-btn" wire:click="beforeStep">مرحله قبل</button>
+            @endif
         </div>
     </div>
 </div>

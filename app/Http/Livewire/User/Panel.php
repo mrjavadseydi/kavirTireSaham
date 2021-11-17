@@ -20,6 +20,6 @@ class Panel extends Component
             'account'=>$this->account,
             'payment'=>$this->payment
         ]
-        );
+        )->layout('layouts.panel');
     }
 }

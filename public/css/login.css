@@ -171,6 +171,7 @@ html, body {
     -webkit-transition: all 0.3s ease;
 }
 .form-structor .login .center .form-holder .input {
+    text-align: center;
     border: 0;
     outline: none;
     box-shadow: none;
