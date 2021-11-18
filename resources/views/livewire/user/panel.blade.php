@@ -11,13 +11,14 @@
 
                         @if (!$payment)
                             @if ($token!=null)
-                                <form action="https://ikc.shaparak.ir/iuiv3/IPG/Index/" method="POST" class="text-center">
+                                <form action="https://ikc.shaparak.ir/iuiv3/IPG/Index/" method="POST"
+                                      class="text-center">
                                     <input type="hidden" name="tokenIdentity" value="{{$token}}"/>
                                     <input type="submit" class="btn btn-info" value="ورود به درگاه پرداخت"/>
                                 </form>
                             @endif
 
-                            <div class="table-responsive"  style="{{$token!=null ? "display:none":''}} ">
+                            <div class="table-responsive" style="{{$token!=null ? "display:none":''}} ">
                                 <table class="table table-bordered table-striped">
                                     <tr>
                                         <th>تعداد پذیره</th>
@@ -86,21 +87,19 @@
                             </span>
                                 شما میتوانید برای پرداخت حق تقدم خود از روش های زیر اقدام کنید.
                                 <br>
-                                جهت پرداخت از طریق مطالبات و آورده نقدی خود (نیازمند پرداخت
-                                <span class="badge badge-warning">
-                            {{number_format($account->withdraw)}}
-                            </span>
-                                ریال از طریق درگاه)   بر روی دکمه زیر کلیک کنید .
-                                <br>                                <br>
-
-                                <div class="text-center">
-
-                                    <button class="btn btn-success" wire:click="getToken()">
-                                        پرداخت از طریق مطالبات و اورده نقدی
-                                    </button>
-
-
-                                </div>
+                                @if($account->withdraw !=0)
+                                    جهت پرداخت از طریق مطالبات و آورده نقدی خود (نیازمند پرداخت
+                                    <span class="badge badge-warning">
+                                     {{number_format($account->withdraw)}}
+                                    </span>
+                                    ریال از طریق درگاه)   بر روی دکمه زیر کلیک کنید .
+                                    <br>                                <br>
+                                    <div class="text-center">
+                                        <button class="btn btn-success" wire:click="getToken()">
+                                            پرداخت از طریق مطالبات و اورده نقدی
+                                        </button>
+                                    </div>
+                                @endif
                                 @if($account->current_stock !=0)
                                     <br>
                                     جهت پرداخت تنها از طریق مطالبات بر روی دکمه زیر کلیک کنید، توجه کنید که تنها برای

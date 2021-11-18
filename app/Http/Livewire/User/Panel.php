@@ -15,6 +15,10 @@ class Panel extends Component
     public function mount(){
         $this->account = session('account');
         $this->payment = Payment::where('account_id',$this->account['id'])->first();
+        if (session()->has('payment')&&session('payment')=='success') {
+            $this->dispatchBrowserEvent('toast', ['type' => 'success', 'msg' => 'پرداخت موفق !']);
+            session(['payment'=>null]);
+        }
     }
 
     public function getToken(){
@@ -24,10 +28,11 @@ class Panel extends Component
          * تمایل به استفاده از حق تقدم ندارم
          */
         $orderId = time().rand(0,9999);
-        $gateWay = getIranKishToken($this->account->withdraw,$orderId);
+        $gateWay = getIranKishToken(1000,$orderId);
         Gateway::create([
             'account_id'=>$this->account->id,
-            'gateway_amount'=>$this->account->withdraw,
+//            'gateway_amount'=>$this->account->withdraw,
+            'gateway_amount'=>1000,
             'token'=>$gateWay['result']['token'],
             'tracking_number'=>$orderId,
             'status'=>0
