@@ -20,7 +20,10 @@ class LoginIndex extends Component
     }
     public function login()
     {
+        $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'در حال حاضر امکان ورود وجود ندارد لطفا دقایقی دیگر مجددا تلاش کنید']);
+        return $this->render();
         if ($this->step == 0) {
+
             $this->accounts = Account::where('stock_number', $this->stock_number)->get();
             $this->step++;
             foreach ($this->accounts as $account) {
@@ -111,6 +114,8 @@ class LoginIndex extends Component
 
     }
     public function signup(){
+        $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'در حال حاضر امکان ثبت نام وجود ندارد لطفا دقایقی دیگر مجددا تلاش کنید']);
+        return $this->render();
         if($this->signup_step==1){
             if(empty($this->fname)||empty($this->lname)||empty($this->certificate)||!is_numeric($this->certificate)||empty($this->father)||empty($this->nat_id)||strlen($this->nat_id)!=10){
                 $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'لطفا با دقت تمامی فیلد هارا تکمیل کنید ']);

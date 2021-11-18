@@ -8,75 +8,101 @@
             <div class="content-body">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <tr>
-                                    <th>تعداد پذیره</th>
-                                    <th>{{$account->all_stock}}</th>
-                                </tr>
+                        @if (!$payment)
 
-                                <tr>
-                                    <th> تعداد پذیره مطالبات</th>
-                                    <th>{{$account->current_stock}}</th>
-                                </tr>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th>تعداد پذیره</th>
+                                        <th>{{$account->all_stock}}</th>
+                                    </tr>
 
-                                <tr>
-                                    <th>تعداد پذیره نقدی</th>
-                                    <th>{{$account->money_current_stock}}</th>
-                                </tr>
+                                    <tr>
+                                        <th> تعداد پذیره مطالبات</th>
+                                        <th>{{$account->current_stock}}</th>
+                                    </tr>
 
-                                <tr>
-                                    <th>مطالبات</th>
-                                    <th>{{number_format($account->wallet)}}</th>
-                                </tr>
+                                    <tr>
+                                        <th>تعداد پذیره نقدی</th>
+                                        <th>{{$account->money_current_stock}}</th>
+                                    </tr>
 
-                                <tr>
-                                    <th>واریز نقدی</th>
-                                    <th>{{number_format($account->withdraw)}}</th>
-                                </tr>
+                                    <tr>
+                                        <th>مطالبات</th>
+                                        <th>{{number_format($account->wallet)}}ریال</th>
+                                    </tr>
 
-                                <tr>
-                                    <th>مجموع</th>
-                                    <th>{{number_format($account->total)}}</th>
-                                </tr>
-                            </table>
-                        </div>
+                                    <tr>
+                                        <th>واریز نقدی</th>
+                                        <th>{{number_format($account->withdraw)}}
+                                            ریال
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <th>مجموع</th>
+                                        <th>{{number_format($account->total)}}
+                                            ریال
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                        @endif
+
                         @if ($payment)
+                            <h5 style="line-height: 25px;">
+                                با عنایت به مجوز افزایش سرمایه به شماره DPM-IOP-00A-120 مورخ 1400/07/12 سازمان بورس و
+                                پیرو
+                                مصوبات مجمع فوق‌العاده مورخ 1400/07/28،
+                                بدینوسیله تایید می‌گردد
+                                مبلغ
+                                <span class="badge badge-info">
+                                    {{$payment->gateway_id==null?number_format($account->current_stock*1000):number_format($account->total)}}
+                                </span>
+                                ریال ،
+                                توسط آقا/خانم {{$account->first_name . " " .$account->last_name}}
+                                با کد ملی{{$account->national_id}}
+                                و کد بورسی
+                                <span class="badge badge-info">
+                                    {{$account->stock_number.$account->stock_alpha}}
+                                </span>
 
-                            با عنایت به مجوز افزایش سرمایه به شماره DPM-IOP-00A-120 مورخ 1400/07/12 سازمان بورس و پیرو
-                            مصوبات مجمع فوق‌العاده مورخ 1400/07/28،
-                            بدینوسیله تایید می‌گردد مبلغ{{number_format($account->total)}}
-                            ریال ،
-                            توسط آقا/خانم {{$account->first_name . " " .$account->last_name}}
-                            با کد ملی{{$account->national_id}}
-                            و کد بورسی
-                            {{$account->stock_number.$account->stock_alpha}}
-                            بابت خرید حق تقدم پرداخت گردید.
-                            شرکت کویرتایر
+                                بابت خرید حق تقدم پرداخت گردید.
+                                <br>
+                                شرکت کویرتایر
+                            </h5>
                         @else
                             جناب آقای / سرکار خانم:
                             <span class="badge badge-info">
                             {{$account->first_name . " " .$account->last_name}}
                             </span>
-                            برای پرداخت هزینه حق تقدم خود به مبلغ
+                            شما میتوانید برای پرداخت حق تقدم خود از روش های زیر اقدام کنید.
+                            <br>
+                            جهت پرداخت از طریق مطالبات و آورده نقدی خود (نیازمند پرداخت
                             <span class="badge badge-warning">
-
                             {{number_format($account->withdraw)}}
                             </span>
-                            ریال  بر روی لینک زیر کلیک کنید .
-                            <br>
-                            مجموع پرداختی شما
-                            <span class="badge badge-info">
+                            ریال از طریق درگاه)   بر روی دکمه زیر کلیک کنید .
+                            <br>                                <br>
 
-                            {{number_format($account->total)}}
-                            </span>
-                            ریال میباشد که مبلغ
-                            <span class="badge badge-danger">
+                            <div class="text-center">
+                                <button class="btn btn-success" wire:click="getToken()">
+                                    پرداخت از طریق مطالبات و اورده نقدی
+                                </button>
+                            </div>
+                            @if($account->current_stock !=0)
+                                <br>
+                                جهت پرداخت تنها از طریق مطالبات بر روی دکمه زیر کلیک کنید، توجه کنید که تنها برای شما
+                                تعداد {{$account->current_stock}} سهم درنظر گرفته خواهد شد
+                                <br>                                <br>
 
-                            {{number_format($account->wallet)}}
-                            </span>
-                            ریال ان از محل مطالبات شما پرداخت خواهد شد .
+                                <div class="text-center">
+                                    <button class="btn btn-success" wire:click="OnlyWallet()">
+                                        پرداخت از طرق مطالبات
+                                    </button>
+                                </div>
 
+                            @endif
                         @endif
 
 

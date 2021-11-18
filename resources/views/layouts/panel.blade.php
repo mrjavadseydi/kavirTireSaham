@@ -41,6 +41,7 @@
             background: #32323aeb;
         }
     </style>
+    @livewireStyles
 </head>
 <!-- END HEAD -->
 
@@ -126,6 +127,7 @@
 
 <script src="{{asset('assets/plugins/sparkline-chart/jquery.sparkline.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/js/chart-sparkline.js')}}" type="text/javascript"></script>
+@livewireScripts
 </body>
 
 </html>

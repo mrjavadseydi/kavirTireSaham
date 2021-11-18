@@ -6,6 +6,7 @@ return [
     'terminalId' => '08086496',
     'password' => 'A5174048E2BCEB9C',
     'acceptor' => '992180008086496',
+    'callback'=>'https://saham.kavirtire.ir/payment',
     'public_key'=>'-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzqomoYhCfjjlUh6BCRVSkjpCg
 AZcfXAymB9Nq9avZglCzfQEpKNl8spUgn7p24Til01jtq9v/0QAj3+NORKkSoKrn

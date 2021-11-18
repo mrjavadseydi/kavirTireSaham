@@ -1,6 +1,6 @@
 <div class="form-structor">
     <div class="signup">
-        <h2 class="form-title" id="signup">
+        <h2 class="form-title" id="signup" wire:loading.remove>
             @if($step==0)
                 ورود به سامانه سهام
 
@@ -15,11 +15,14 @@
 
 
         </h2>
-        <form wire:submit.prevent="login">
+        <h2 wire:loading class="form-title" style="text-align: center">
+            در حال بررسی
+        </h2>
+        <form wire:submit.prevent="login" wire:loading.remove>
 
             <div class="form-holder">
                 @if ($step==0)
-                    <input type="number" class="input" placeholder="بخش عددی کد بورسی" wire:model="stock_number"/>
+                    <input type="number" class="input" placeholder="بخش عددی کد بورسی" wire:model.lazy="stock_number"/>
 
                 @elseif($step==1)
                     <select class="input select" wire:model="stock_alpha">
