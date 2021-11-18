@@ -128,6 +128,8 @@
 <script src="{{asset('assets/plugins/sparkline-chart/jquery.sparkline.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/js/chart-sparkline.js')}}" type="text/javascript"></script>
 @livewireScripts
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
 </body>
 
 </html>

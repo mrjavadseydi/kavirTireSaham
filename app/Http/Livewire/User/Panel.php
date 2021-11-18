@@ -11,32 +11,30 @@ class Panel extends Component
     public $account ;
     protected $listeners = ['refreshProducts' => '$refresh'];
     public $payment ;
+    public $token = null ;
     public function mount(){
         $this->account = session('account');
         $this->payment = Payment::where('account_id',$this->account['id'])->first();
     }
 
     public function getToken(){
-
         /*
          * پرداخت از طریق مطالبات و اورده نقدی
          * پرداخت از طرق مطالبات
          * تمایل به استفاده از حق تقدم ندارم
          */
-//        if ($this->account->withdraw==0) {
-//            Payment::create([
-//                'account_id'=>$this->account->id,
-//                'gateway_id'=>null,
-//                'local_pay'=>$this->account->total,
-//            ]);
-//           return  $this->render();
-//        }else{
-            $gateWay = getIranKishToken($this->account->withdraw,rand(1,9999));
-            dd($gateWay);
-//            Gateway::create([
-//                ''
-//            ])
-//        }
+        $orderId = time().rand(0,9999);
+        $gateWay = getIranKishToken($this->account->withdraw,$orderId);
+        Gateway::create([
+            'account_id'=>$this->account->id,
+            'gateway_amount'=>$this->account->withdraw,
+            'token'=>$gateWay['result']['token'],
+            'tracking_number'=>$orderId,
+            'status'=>0
+        ]);
+        $this->token = $gateWay['result']['token'];
+        $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'دکمه ورود به درگاه را انتخاب کنید']);
+
     }
     public function OnlyWallet(){
             Payment::create([

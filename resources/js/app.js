@@ -9,7 +9,7 @@ const Swal = require('sweetalert2')
 
 const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: 'bottom-end',
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -21,7 +21,6 @@ const Toast = Swal.mixin({
 
 window.addEventListener('toast', event => {
 
-    console.log(event.detail.type);
     Toast.fire({
         icon: event.detail.type,
         title: event.detail.msg
