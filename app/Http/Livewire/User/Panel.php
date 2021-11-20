@@ -28,11 +28,11 @@ class Panel extends Component
          * تمایل به استفاده از حق تقدم ندارم
          */
         $orderId = time().rand(0,9999);
-        $gateWay = getIranKishToken(1000,$orderId);
+        $gateWay = getIranKishToken($this->account->withdraw,$orderId);
         Gateway::create([
             'account_id'=>$this->account->id,
-//            'gateway_amount'=>$this->account->withdraw,
-            'gateway_amount'=>1000,
+            'gateway_amount'=>$this->account->withdraw,
+//            'gateway_amount'=>1000,
             'token'=>$gateWay['result']['token'],
             'tracking_number'=>$orderId,
             'status'=>0
@@ -48,6 +48,16 @@ class Panel extends Component
                 'local_pay'=>$this->account->current_stock*1000,
             ]);
            return $this->redirect(route('user.panel'));
+    }
+
+    public function cancelMe()
+    {
+        Payment::create([
+            'account_id'=>$this->account->id,
+            'gateway_id'=>null,
+            'local_pay'=>null,
+        ]);
+        return $this->redirect(route('user.panel'));
     }
     public function render()
     {

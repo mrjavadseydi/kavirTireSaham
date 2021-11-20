@@ -48,19 +48,9 @@
 <!-- BEGIN BODY -->
 <body class=" "><!-- START TOPBAR -->
 <div class='page-topbar '>
-    <div class="logo-area">
 
-    </div>
     <div class='quick-area'>
-        <div class='pull-left'>
-            <ul class="info-menu left-links list-inline list-unstyled">
-                <li class="sidebar-toggle-wrap">
-                    <a href="#" data-toggle="sidebar" class="sidebar_toggle">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
+
         <div class='pull-right'>
             <ul class="info-menu right-links list-inline list-unstyled">
                 <li class="profile">
@@ -86,35 +76,13 @@
 
 <section class="page-container row-fluid">
 
-
-    <div class="page-sidebar ">
-
-        <div class="page-sidebar-wrapper" id="main-menu-wrapper">
-
-
-            <ul class='wraplist'>
-
-                <li class="">
-                    <a href="{{route('user.panel')}}" class="sidebarItem">
-
-                        <i class="fa fa-dashboard"></i>
-
-
-                        <span class="title">داشبورد</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-
-
-    <section id="main-content" class="">
-        <section class="wrapper" style="margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;">
+    <section  class="">
+        <section class="" style="margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;">
 
             {{$slot}}
         </section>
     </section>
+</section>
 </div>
 </div>
 <script src="{{asset('assets/js/jquery-1.11.2.min.js')}}" type="text/javascript"></script>

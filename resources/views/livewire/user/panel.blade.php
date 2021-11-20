@@ -20,44 +20,56 @@
 
                             <div class="table-responsive" style="{{$token!=null ? "display:none":''}} ">
                                 <table class="table table-bordered table-striped">
+                                    <thead>
                                     <tr>
-                                        <th>تعداد پذیره</th>
+                                        <th>تعداد پذیره (سهم)</th>
+                                        <th>پرداختی به ازای هر پذیره</th>
+                                        <th>جمع کل</th>
+                                        <th>مبلغ مطالبات شما</th>
+                                        <th>پرداخت از طریق مطالبات</th>
+                                        <th>پرداخت از طریق مطالبات و آورده نقدی</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
                                         <th>{{$account->all_stock}}</th>
-                                    </tr>
+                                        <th>1,000 ریال</th>
+                                        <th>{{$account->total}}</th>
+                                        <th>{{number_format($account->wallet)}} ریال</th>
+                                        <th>
+                                            @if ($account->current_stock>0)
+                                                <div class="text-center">
+                                                    <button class="btn btn-success" wire:click="OnlyWallet()">
+                                                        پرداخت از طرق مطالبات
+                                                        (
+                                                        {{$account->current_stock}}
+                                                        سهم
+                                                        )
+                                                    </button>
+                                                </div>
+                                            @endif
 
-                                    <tr>
-                                        <th> تعداد پذیره مطالبات</th>
-                                        <th>{{$account->current_stock}}</th>
-                                    </tr>
-
-                                    <tr>
-                                        <th>تعداد پذیره نقدی</th>
-                                        <th>{{$account->money_current_stock}}</th>
-                                    </tr>
-
-                                    <tr>
-                                        <th>مطالبات</th>
-                                        <th>{{number_format($account->wallet)}}ریال</th>
-                                    </tr>
-
-                                    <tr>
-                                        <th>واریز نقدی</th>
-                                        <th>{{number_format($account->withdraw)}}
-                                            ریال
+                                        </th>
+                                        <th>
+                                            @if($account->withdraw !=0)
+                                                <div class="text-center">
+                                                    <button class="btn btn-success" wire:click="getToken()">
+                                                        پرداخت از طریق مطالبات و اورده نقدی(
+                                                        {{number_format($account->withdraw)}}
+                                                        ریال
+                                                        )
+                                                    </button>
+                                                </div>
+                                            @endif
                                         </th>
                                     </tr>
+                                    </tbody>
 
-                                    <tr>
-                                        <th>مجموع</th>
-                                        <th>{{number_format($account->total)}}
-                                            ریال
-                                        </th>
-                                    </tr>
                                 </table>
                             </div>
                         @endif
                         <div style="{{$token!=null ? "display:none":''}} ">
-                            @if ($payment)
+                            @if ($payment&&$payment->local_pay!=null)
                                 <h5 style="line-height: 25px;">
                                     با عنایت به مجوز افزایش سرمایه به شماره DPM-IOP-00A-120 مورخ 1400/07/12 سازمان بورس
                                     و
@@ -80,40 +92,25 @@
                                     <br>
                                     شرکت کویرتایر
                                 </h5>
-                            @else
+                            @elseif(!$payment)
                                 جناب آقای / سرکار خانم:
                                 <span class="badge badge-info">
                             {{$account->first_name . " " .$account->last_name}}
                             </span>
-                                شما میتوانید برای پرداخت حق تقدم خود از روش های زیر اقدام کنید.
+                                در صورت تمایل به انصراف از حق تقدم خود از دکمه زیر استفاده کنید
                                 <br>
-                                @if($account->withdraw !=0)
-                                    جهت پرداخت از طریق مطالبات و آورده نقدی خود (نیازمند پرداخت
-                                    <span class="badge badge-warning">
-                                     {{number_format($account->withdraw)}}
-                                    </span>
-                                    ریال از طریق درگاه)   بر روی دکمه زیر کلیک کنید .
-                                    <br>                                <br>
-                                    <div class="text-center">
-                                        <button class="btn btn-success" wire:click="getToken()">
-                                            پرداخت از طریق مطالبات و اورده نقدی
-                                        </button>
-                                    </div>
-                                @endif
-                                @if($account->current_stock !=0)
-                                    <br>
-                                    جهت پرداخت تنها از طریق مطالبات بر روی دکمه زیر کلیک کنید، توجه کنید که تنها برای
-                                    شما
-                                    تعداد {{$account->current_stock}} سهم درنظر گرفته خواهد شد
-                                    <br>                                <br>
-
-                                    <div class="text-center">
-                                        <button class="btn btn-success" wire:click="OnlyWallet()">
-                                            پرداخت از طرق مطالبات
-                                        </button>
-                                    </div>
-
-                                @endif
+                                <br>
+                                <div class="text-center">
+                                    <button class="btn btn-danger" wire:click="cancelMe">
+                                        انصراف از حق تقدم ( غیر قابل بازگشت )
+                                    </button>
+                                </div>
+                            @elseif($payment&&$payment->local_pay==null)
+                                جناب آقای / سرکار خانم:
+                                <span class="badge badge-info">
+                            {{$account->first_name . " " .$account->last_name}}
+                            </span>
+                                شما از حق تقدم خود انصراف داده اید !
                             @endif
                         </div>
 
