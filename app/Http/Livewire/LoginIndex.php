@@ -163,7 +163,8 @@ class LoginIndex extends Component
                     'withdraw'=>$this->stock_count*1000,
                     'total'=>$this->stock_count*1000,
                     'stock_alpha'=>$this->st_alp,
-                    'stock_number'=>$this->st_num
+                    'stock_number'=>$this->st_num,
+                   'sign_up'=>true,
                 ]);
                 session(['account' => $account]);
                 return $this->redirect(route('user.panel'));

@@ -97,18 +97,19 @@
 
                 <li class="">
                     <a href="{{route('admin.panel')}}" class="sidebarItem">
-
                         <i class="fa fa-dashboard"></i>
-
-
                         <span class="title">داشبورد</span>
                     </a>
                 </li>
                 <li class="">
+                    <a href="{{route('admin.users')}}" class="sidebarItem">
+                        <i class="fa fa-user"></i>
+                        <span class="title">کاربران</span>
+                    </a>
+                </li>
+                <li class="">
                     <a href="{{route('admin.payments')}}" class="sidebarItem">
-
                         <i class="fa fa-money"></i>
-
                         <span class="title">پرداختی ها</span>
                     </a>
                 </li>
