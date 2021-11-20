@@ -96,7 +96,7 @@
             <ul class='wraplist'>
 
                 <li class="">
-                    <a href="{{route('user.panel')}}" class="sidebarItem">
+                    <a href="{{route('admin.panel')}}" class="sidebarItem">
 
                         <i class="fa fa-dashboard"></i>
 
@@ -104,7 +104,14 @@
                         <span class="title">داشبورد</span>
                     </a>
                 </li>
+                <li class="">
+                    <a href="{{route('admin.payments')}}" class="sidebarItem">
 
+                        <i class="fa fa-money"></i>
+
+                        <span class="title">پرداختی ها</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

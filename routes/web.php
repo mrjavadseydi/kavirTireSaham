@@ -36,4 +36,5 @@ Route::get('/logout', function () {
 Route::post('/payment', [\App\Http\Controllers\PaymentController::class,'payment']);
 Route::middleware('auth')->prefix('admin')->group(function (){
     Route::get('/panel',\App\Http\Livewire\Admin\Panel::class)->name('admin.panel');
+    Route::get('/payments',\App\Http\Livewire\Admin\Payment::class)->name('admin.payments');
 });
