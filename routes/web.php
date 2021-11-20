@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\Account as Account;
-use App\Models\Gateway as Gateway;
-use App\Models\Payment as Payment;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', \App\Http\Livewire\LoginIndex::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    return redirect(\route('admin.panel'));
 })->name('dashboard');
 Route::view('/vv', 'excel.upload');
 Route::post('/testExcel', function (\Illuminate\Http\Request $request) {
@@ -35,58 +33,7 @@ Route::get('/logout', function () {
     session()->flush();
     return redirect(url('/'));
 })->name('logout');
-Route::post('/payment', function (\Illuminate\Http\Request $request) {
-    if ($request->responseCode != '00') {
-        return view('faild', [
-            'track' => $request->paymentId,
-            'token' => $request->token
-        ]);
-    } else {
-        $gateway = Gateway::where([
-            [
-                'token', $request->token
-            ],
-            [
-                'tracking_number', $request->paymentId
-            ],
-            [
-                'gateway_amount', $request->amount
-            ],
-            [
-                'status', 0
-            ]
-        ])->first();
-        if (!$gateway) {
-            return view('faild', [
-                'track' => $request->paymentId,
-                'token' => $request->token
-            ]);
-        } else {
-            $gateway->update([
-                'systemTraceAuditNumber' => $request->systemTraceAuditNumber
-            ]);
-            $result = verifyPayment($request->retrievalReferenceNumber, $request->systemTraceAuditNumber, $request->token);
-            if ($result['responseCode'] != '00') {
-                $gateway->update([
-                    'status' => $result['responseCode']
-                ]);
-                return view('faild', [
-                    'track' => $request->paymentId,
-                    'token' => $request->token
-                ]);
-            }
-            $account = Account::whereId($gateway->account_id)->first();
-            session(['account' => $account]);
-            $gateway->update([
-                'status' => 1,
-            ]);
-            Payment::create([
-                'account_id' => $account->id,
-                'gateway_id' => $gateway->id,
-                'local_pay' => $account->current_stock * 1000,
-            ]);
-            session(['payment' => 'success']);
-            return redirect(\route('user.panel'));
-        }
-    }
+Route::post('/payment', [\App\Http\Controllers\PaymentController::class,'payment']);
+Route::middleware('auth')->prefix('admin')->group(function (){
+    Route::get('/panel',\App\Http\Livewire\Admin\Panel::class)->name('admin.panel');
 });
