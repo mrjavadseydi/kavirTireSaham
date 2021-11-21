@@ -16,6 +16,7 @@ class AccountImport implements ToCollection
     */
     public function collection(Collection $collection)
     {
+        print("initzial excel...");
 //        dd($collection[0],$collection[2]);
         foreach ($collection as $i=> $row){
             if($i==0){
@@ -24,8 +25,16 @@ class AccountImport implements ToCollection
             try{
                 $stock_id = $row[3];
                 preg_match_all('/[0-9]+/',$stock_id, $stock_number);
+                if (!isset( $stock_number[0][0])) {
+                    continue;
+                }
                 $stock_number = $stock_number[0][0];
                 $stock_alpha = str_replace($stock_number,'',$stock_id);
+                if(empty($row[10])||$row[10]==""||$row[10]==" ")
+                    $mcs=0;
+                else {
+                    $mcs=$row[10];
+                }
                 Account::create([
                     'certificate'=>$row[0],
                     'first_name'=>$row[1],
@@ -34,12 +43,12 @@ class AccountImport implements ToCollection
                     'certificate_id'=>$row[5],
                     'phone'=>$row[12],
                     'mobile'=>$row[14],
-                    'national_id'=>$row[4],
+                    'national_id'=>$row[4]??" ",
                     'address'=>$row[11],
                     'post_code'=>$row[13],
                     'all_stock'=>$row[8],
                     'current_stock'=>$row[9],
-                    'money_current_stock'=>$row[10],
+                    'money_current_stock'=>$mcs,
                     'wallet'=>$row[15],
                     'withdraw'=>$row[16],
                     'total'=>$row[17],
@@ -47,8 +56,10 @@ class AccountImport implements ToCollection
                     'stock_alpha'=>$stock_alpha,
                     'stock_number'=>$stock_number
                 ]);
+
             }catch (\Exception $e){
-                echo "error in line".$i;
+                print ("error in line".$i ."\n");
+                exit();
             }
 
         }

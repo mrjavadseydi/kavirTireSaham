@@ -34,7 +34,7 @@
                                     <tr>
                                         <th>{{$account->all_stock}}</th>
                                         <th>1,000 ریال</th>
-                                        <th>{{$account->total}}</th>
+                                        <th>{{number_format($account->total)}} ریال </th>
                                         <th>{{number_format($account->wallet)}} ریال</th>
                                         <th>
                                             @if ($account->current_stock>0)
@@ -102,7 +102,7 @@
                                 <br>
                                 <div class="text-center">
                                     <button class="btn btn-danger" wire:click="cancelMe">
-                                        انصراف از حق تقدم ( غیر قابل بازگشت )
+                                        انصراف از حق تقدم
                                     </button>
                                 </div>
                             @elseif($payment&&$payment->local_pay==null)

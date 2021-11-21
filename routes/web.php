@@ -22,7 +22,8 @@ Route::view('/vv', 'excel.upload');
 Route::post('/testExcel', function (\Illuminate\Http\Request $request) {
     $filename = uniqid() . "." . $request->file('file')->extension();
     $request->file('file')->move(public_path('/up'), $filename);
-    \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport, public_path('/up') . "/" . $filename);
+//    dd($filename);
+//    \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport, public_path('/up') . "/" . $filename);
 
 })->name('ex');
 
