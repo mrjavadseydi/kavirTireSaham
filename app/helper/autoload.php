@@ -62,13 +62,14 @@ if (!function_exists('getIranKishToken')) {
         $data["request"] = array(
             "acceptorId" => $acceptorId,
             "amount" => (int)$Amount,
-            "billInfo" => null,
             "requestId" => uniqid(),
             "paymentId" => (string)$orderId,
             "requestTimestamp" => time(),
             "revertUri" => config('IranKish.callback'),
             "terminalId" => $terminalID,
-            "transactionType" => "Purchase"
+            "transactionType" => "Purchase",
+            "billInfo"=>null,
+
         );
         $data['authenticationEnvelope'] = $token;
         $data_string = json_encode($data);

@@ -2,7 +2,7 @@
     <div class="signup">
         <h2 class="form-title" id="signup" wire:loading.remove>
             @if($step==0)
-                ورود به سامانه سهام
+                ورود به سامانه سهام شرکت کویرتایر
 
             @elseif ($step==1)
                 بخش حرفی کد بورسی خود را انتخاب کنید
@@ -52,7 +52,7 @@
 
                 @endif
             </div>
-            <button class="submit-btn">{{$step==0?"ورود":"ادامه فرایند"}}</button>
+            <button class="submit-btn">{{$step==0?"ورود":"ادامه"}}</button>
         </form>
 
     </div>
@@ -61,21 +61,21 @@
             <h2 class="form-title" id="login" wire:click="activeSignup">ثبت نام</h2>
             <div class="form-holder">
                 @if($signup_step==1)
-                    <input type="text" class="input"  wire:model="fname" placeholder="نام"/>
-                    <input type="text" class="input"  wire:model="lname" placeholder="نام خانوادگی"/>
-                    <input type="text" class="input"  wire:model="certificate" placeholder="کد سهامدار"/>
-                    <input type="text" class="input"  wire:model="father" placeholder="نام پدر"/>
-                    <input type="text" class="input"  wire:model="nat_id" placeholder="کد ملی"/>
+                    <input type="text" class="input"  wire:model.lazy="fname" placeholder="نام"/>
+                    <input type="text" class="input"  wire:model.lazy="lname" placeholder="نام خانوادگی"/>
+                    <input type="text" class="input"  wire:model.lazy="certificate" placeholder="کد سهامدار"/>
+                    <input type="text" class="input"  wire:model.lazy="father" placeholder="نام پدر"/>
+                    <input type="text" class="input"  wire:model.lazy="nat_id" placeholder="کد ملی"/>
                 @elseif($signup_step==2)
-                    <input type="text" class="input" wire:model="phone" placeholder="تلفن ثابت"/>
-                    <input type="text" class="input" wire:model="mobile" placeholder="موبایل"/>
-                    <input type="text" class="input" wire:model="st_num" placeholder="بخش عددی کد بورسی"/>
-                    <input type="text" class="input" wire:model="st_alp" placeholder="بخش حرفی کد بورسی"/>
+                    <input type="text" class="input" wire:model.lazy="phone" placeholder="تلفن ثابت"/>
+                    <input type="text" class="input" wire:model.lazy="mobile" placeholder="موبایل"/>
+                    <input type="text" class="input" wire:model.lazy="st_num" placeholder="بخش عددی کد بورسی"/>
+                    <input type="text" class="input" wire:model.lazy="st_alp" placeholder="بخش حرفی کد بورسی"/>
                 @else
-                    <input type="text" class="input" wire:model="stock_count" placeholder="تعداد سهام حق تقدم"/>
-                    <input type="text" class="input" wire:model="cert_id" placeholder="شماره شناسنامه"/>
-                    <input type="text" class="input" wire:model="address" placeholder="ادرس پستی"/>
-                    <input type="text" class="input" wire:model="post_code" placeholder="کد پستی"/>
+                    <input type="text" class="input" wire:model.lazy="stock_count" placeholder="تعداد سهام حق تقدم"/>
+                    <input type="text" class="input" wire:model.lazy="cert_id" placeholder="شماره شناسنامه"/>
+                    <input type="text" class="input" wire:model.lazy="address" placeholder="ادرس پستی"/>
+                    <input type="text" class="input" wire:model.lazy="post_code" placeholder="کد پستی"/>
                 @endif
             </div>
             <button class="submit-btn" wire:click="signup">مرحله بعد</button>

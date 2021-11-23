@@ -5,12 +5,13 @@ namespace App\Http\Livewire\User;
 use App\Models\Gateway;
 use App\Models\Payment;
 use Livewire\Component;
+use function Livewire\str;
 
 class Panel extends Component
 {
     public $account ;
     protected $listeners = ['refreshProducts' => '$refresh'];
-    public $payment ;
+    public $payment ,$shaba ;
     public $token = null ;
     public function mount(){
         $this->account = session('account');
@@ -32,7 +33,6 @@ class Panel extends Component
         Gateway::create([
             'account_id'=>$this->account->id,
             'gateway_amount'=>$this->account->withdraw,
-//            'gateway_amount'=>1000,
             'token'=>$gateWay['result']['token'],
             'tracking_number'=>$orderId,
             'status'=>0
@@ -52,15 +52,20 @@ class Panel extends Component
 
     public function cancelMe()
     {
+        $data = $this->validate([
+            'shaba'=>'required|starts_with:IR,ir,Ir|size:26'
+        ]);
         Payment::create([
             'account_id'=>$this->account->id,
             'gateway_id'=>null,
             'local_pay'=>null,
+            'shaba'=>$data['shaba']
         ]);
         return $this->redirect(route('user.panel'));
     }
     public function render()
     {
+//        dd($this->payment);
         return view('livewire.user.panel' ,
         [
             'account'=>$this->account,

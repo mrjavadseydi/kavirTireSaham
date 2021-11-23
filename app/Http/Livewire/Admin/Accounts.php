@@ -52,12 +52,12 @@ class Accounts extends LivewireDatatable
             Column::callback(['id'], function ($id) {
                 if(!($payment = Payment::where('account_id',$id)->first())){
                     return "پرداختی انجام نشده";
-                }elseif ($payment->gateway_id==null&&$payment->local_pay!=null){
+                }elseif ($payment->gateway_id===null&&$payment->local_pay!==null){
                     return "پرداخت از مطالبات";
-                }elseif($payment->gateway_id==null&&$payment->local_pay==null){
+                }elseif($payment->gateway_id===null&&$payment->local_pay===null){
                     return "انصراف از حق تقدم";
                 }else{
-                    return  " پرداخت از مطالبات و نقدی ";
+                    return  "موفق ";
                 }
             })->label('پرداخت ')->filterable()->alignCenter()->searchable(),
 

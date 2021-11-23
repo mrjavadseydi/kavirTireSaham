@@ -18,17 +18,14 @@ Route::get('/', \App\Http\Livewire\LoginIndex::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return redirect(\route('admin.panel'));
 })->name('dashboard');
-Route::view('/vv', 'excel.upload');
-Route::post('/testExcel', function (\Illuminate\Http\Request $request) {
-    $filename = uniqid() . "." . $request->file('file')->extension();
-    $request->file('file')->move(public_path('/up'), $filename);
-//    dd($filename);
-//    \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport, public_path('/up') . "/" . $filename);
 
-})->name('ex');
 
 Route::prefix('panel')->middleware('AcoountLogin')->group(function () {
     Route::get('/', \App\Http\Livewire\User\Panel::class)->name('user.panel');
+    Route::get('/print',function (){
+        $account = session('account');
+        return view('print',compact('account'));
+    })->name('print');
 });
 Route::get('/logout', function () {
     session()->flush();
@@ -39,4 +36,6 @@ Route::middleware('auth')->prefix('admin')->group(function (){
     Route::get('/panel',\App\Http\Livewire\Admin\Status::class)->name('admin.panel');
     Route::get('/payments',\App\Http\Livewire\Admin\Payment::class)->name('admin.payments');
     Route::get('/users',\App\Http\Livewire\Admin\Panel::class)->name('admin.users');
+
 });
+Route::view('print','print');
