@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', \App\Http\Livewire\LoginIndex::class);
+Route::get('/', \App\Http\Livewire\LoginIndex::class)->name('log');
+Route::get('/signup', \App\Http\Livewire\Signup::class)->name('reg');
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return redirect(\route('admin.panel'));
 })->name('dashboard');
@@ -26,6 +28,11 @@ Route::prefix('panel')->middleware('AcoountLogin')->group(function () {
         $account = session('account');
         return view('print',compact('account'));
     })->name('print');
+    Route::get('/print-resid',function (){
+        $account = session('account');
+        $payment = Payment::where('account_id',$account['id'])->first();
+        return view('livewire.user.print',compact('account','payment'));
+    })->name('print-resid');
 });
 Route::get('/logout', function () {
     session()->flush();
@@ -39,3 +46,8 @@ Route::middleware('auth')->prefix('admin')->group(function (){
 
 });
 Route::view('print','print');
+//Route::view('log')
+Route::get('/log',function (){
+    session(['account'=>\App\Models\Account::whereId(44578)->first()]);
+    return redirect(url('/print'));
+});

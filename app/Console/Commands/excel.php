@@ -37,7 +37,7 @@ class excel extends Command
      */
     public function handle()
     {
-        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport, public_path('/up') . "/1.xls" );
+        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\AccountImport, public_path('/up') . "/1.xlsx" );
         return Command::SUCCESS;
     }
 }

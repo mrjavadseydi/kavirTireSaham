@@ -3,6 +3,19 @@
         .has-error {
             border-color: red;
         }
+
+        tr {
+            text-align: center;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        table {
+            text-align: center;
+
+        }
     </style>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <section class="box ">
@@ -16,16 +29,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
 
                         @if (!$payment)
-                            <div class="alert alert-info">
-                                <p>سهامدار محترم جهت دریافت برگه حق تقدم و پرداخت از طریق بانک
-                                    <a href="{{route('print')}}" target="_top" style="font-weight: bolder;text-decoration: underline ; ">
-                                        بر روی
-                                        این
-                                        لینک کلیک کید
-                                    </a>
 
-                                </p>
-                            </div>
                             @if ($token!=null)
                                 <div class="text-center" style="text-align: center">
 
@@ -100,25 +104,76 @@
                                             <tr>
                                                 <th>پرداخت از طریق مطالبات و آورده نقدی</th>
                                                 <th>
-                                                    <div class="text-center">
+                                                    <divdiv class="text-center">
                                                         <button class="btn btn-success" wire:click="getToken()">
                                                             پرداخت از طریق مطالبات و اورده نقدی(
                                                             {{number_format($account->withdraw)}}
                                                             ریال
                                                             )
                                                         </button>
-                                                    </div>
+                                                    </divdiv>
                                                 </th>
                                             </tr>
                                         @endif
 
                                     </table>
                                 </div>
+                                <div class="alert alert-info">
+                                    <p>سهامدار محترم جهت دریافت برگه حق تقدم
+                                        <a href="{{route('print')}}" target="_top"
+                                           style="font-weight: bolder;text-decoration: underline ; ">
+                                            بر روی
+                                            این
+                                            لینک کلیک کنید
+                                        </a>
+
+                                    </p>
+                                </div>
 
                             </div>
                         @endif
                         <div style="{{$token!=null ? "display:none":''}} ">
                             @if ($payment&&$payment->local_pay!==null)
+                                <div class="table-responsive" style="{{$token!=null ? "display:none":''}} ">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <tr>
+                                                <th>تعداد پذیره (تعداد سهم )</th>
+                                                <th>{{$account->all_stock}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th> تعداد پذیره مطالبات</th>
+                                                <th>{{$account->current_stock}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th>تعداد پذیره نقدی</th>
+                                                <th>{{$account->money_current_stock}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th>ارزش هر حق تقدم</th>
+                                                <th>{{number_format(1000)}}ریال</th>
+                                            </tr>
+                                            <tr>
+                                                <th>مطالبات</th>
+                                                <th>{{number_format($account->wallet)}}ریال</th>
+                                            </tr>
+
+                                            <tr>
+                                                <th>واریز نقدی</th>
+                                                <th>{{number_format($account->withdraw)}}
+                                                    ریال
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>مجموع</th>
+                                                <th>{{number_format($account->total)}}
+                                                    ریال
+                                                </th>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                </div>
                                 <h5 style="line-height: 25px;">
                                     با عنایت به مجوز افزایش سرمایه به شماره DPM-IOP-00A-120 مورخ 1400/07/12 سازمان بورس
                                     و
@@ -141,21 +196,36 @@
                                     <br>
                                     شرکت کویرتایر
                                 </h5>
+                                <div class="alert alert-info">
+                                    <p>سهامدار محترم جهت دریافت رسید خرید حق تقدم خود
+                                        <a href="{{route('print-resid')}}" target="_top"
+                                           style="font-weight: bolder;text-decoration: underline ; ">
+                                            بر روی
+                                            این
+                                            لینک کلیک کید
+                                        </a>
+
+                                    </p>
+                                </div>
                             @elseif(!$payment)
                                 <br>
-                                <div class="text-center">
+                                <div class="text-center" style="color:black;" >
                                     سهامدار گرامی، جناب آقای / سرکار خانم:
                                     <span class="badge badge-info">
                             {{$account->first_name . " " .$account->last_name}}
                             </span>
+                                    <span style="color: black">
+
                                     در صورت تمایل به انصراف از حق تقدم خود، بر روی دکمه زیر کلیک نموده و پس از آن شماره
                                     شبای خود را جهت دریافت مطالبات وارد نمایید:
+                                                                      </span>
+
                                     <br>
                                     <br>
 
                                     <div class="text-center ">
                                         <div style="display: flex;align-content: center;align-items: center">
-                                            <input style="width: 50%;margin: 0 auto;min-width: 154px"
+                                            <input style="width: 40%;margin: 0 auto;min-width: 104px"
                                                    class="form-control  @error('shaba') has-error @enderror "
                                                    wire:model.lazy="shaba" placeholder="شماره شبا">
                                         </div>
@@ -179,13 +249,22 @@
                             </span>
                                 شما از حق تقدم خود انصراف داده اید !
                             @endif
-                        </div>
-                        <a referrerpolicy="origin" target="_blank"
-                           href="https://trustseal.enamad.ir/?id=42368&amp;Code=HniMumvVIDTOpxNglEor"><img
-                                referrerpolicy="origin"
-                                src="https://Trustseal.eNamad.ir/logo.aspx?id=42368&amp;Code=HniMumvVIDTOpxNglEor"
-                                alt="" style="cursor:pointer" id="HniMumvVIDTOpxNglEor"></a>
+                            @if(!$payment)
+                                <br>
+                                <p style="color: black;line-height: 30px">
+                                    * سهامدار گرامی، با توجه به محدودیت مبلغ پرداختی در درگاه های بانکی کشور، چنانچه
+                                    مبلغ پرداختی شما بیشتر از 50 میلیون تومان است، خواهشمند است مبلغ مورد نظر را به صورت
+                                    حضوری در بانک به حساب شمارۀ 321513393 اين شرکت نزد بانک رفاه کارگران شعبه آزادی کد
+                                    شعبه 1380 یا شماره شبای IR72-0130-1000-0000-0321-5133-93 واریز و مدارک آن را به آدرس
+                                    «استان خراسان جنوبی- بیرجند -صندوق پستی 878-97135 امور سهامداران شرکت کوير تاير»
+                                    ارسال فرمایید.
 
+                                    <br>
+                                    هشدار: سهامدار گرامی، پس از ثبت اطلاعات و انتخاب نحوه پرداخت، امکان تغییر در آن وجود
+                                    ندارد. خواهشمند است در خصوص انتخاب نحوه پرداخت و سایر موارد دقت فرمایید.
+                                </p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

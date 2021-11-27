@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Account;
 use App\Models\Payment;
+use App\Models\Summery;
+use Carbon\Carbon;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\NumberColumn;
+use Morilog\Jalali\Jalalian;
 
 class Accounts extends LivewireDatatable
 {
@@ -15,7 +18,7 @@ class Accounts extends LivewireDatatable
 
     public function builder()
     {
-        return Account::query();
+        return Summery::query();
     }
 
     public function columns()
@@ -44,23 +47,26 @@ class Accounts extends LivewireDatatable
             NumberColumn::name('total')->label('جمع مبلغ')->filterable()->alignCenter()->searchable(),
             Column::callback(['has_login','last_login'], function ($has_login, $last_login) {
                 if($has_login){
-                    return $last_login;
+                    return  Jalalian::fromCarbon(new Carbon($last_login));
                 }else{
                     return "بدون ورود";
                 }
             })->label('ورود؟')->filterable()->alignCenter()->searchable(),
-            Column::callback(['id'], function ($id) {
-                if(!($payment = Payment::where('account_id',$id)->first())){
-                    return "پرداختی انجام نشده";
-                }elseif ($payment->gateway_id===null&&$payment->local_pay!==null){
-                    return "پرداخت از مطالبات";
-                }elseif($payment->gateway_id===null&&$payment->local_pay===null){
-                    return "انصراف از حق تقدم";
-                }else{
-                    return  "موفق ";
-                }
-            })->label('پرداخت ')->filterable()->alignCenter()->searchable(),
+            Column::callback(['payment_created','account_id','local_pay','gateway_id'], function ($payment_created,$account_id,$local_pay,$gateway_id) {
+                return $this->getPayStatus($payment_created,$account_id,$local_pay,$gateway_id);
+            })->label('پرداخت ')->alignCenter()->searchable(),
 
         ];
+    }
+    public function getPayStatus($payment_created,$account_id,$local_pay,$gateway_id){
+        if(!$payment_created){
+            return "پرداختی انجام نشده";
+        }elseif ($gateway_id===null&&$local_pay!==null){
+            return "پرداخت از طریق مطالبات";
+        }elseif($gateway_id===null&&$local_pay===null){
+            return "انصراف از حق تقدم";
+        }else{
+            return  "پرداخت از طریق مطالبات و نقدی";
+        }
     }
 }

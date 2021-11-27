@@ -13,8 +13,22 @@
     <link rel="icon" sizes="64x64" href="{{asset('favicon-64.png')}}" type="image/png"/>
     <link rel="icon" sizes="96x96" href="{{asset('favicon-96.png')}}" type="image/png"/>
     @livewireStyles
+    <style>
+        #top{
+            position: absolute;
+            height: 150px;
+            width: 99%;
+            background: white;
+            top: 0;
+            overflow-y: scroll;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+<div id="top">
+<img src="{{asset('w1.jpg')}}" style="width: 95%;margin: 0 auto">
+</div>
 {{$slot}}
 @livewireScripts
 <script src="{{asset('js/login.js')}}"></script>

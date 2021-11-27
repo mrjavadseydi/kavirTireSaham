@@ -29,13 +29,15 @@ class Panel extends Component
          * تمایل به استفاده از حق تقدم ندارم
          */
         $orderId = time().rand(0,9999);
-        $gateWay = getIranKishToken($this->account->withdraw,$orderId);
+        $factor_number = uniqid();
+        $gateWay = getIranKishToken($this->account->withdraw,$orderId,$factor_number);
         Gateway::create([
             'account_id'=>$this->account->id,
             'gateway_amount'=>$this->account->withdraw,
             'token'=>$gateWay['result']['token'],
             'tracking_number'=>$orderId,
-            'status'=>0
+            'status'=>0,
+            'factor_number'=>$factor_number
         ]);
         $this->token = $gateWay['result']['token'];
         $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'دکمه ورود به درگاه را انتخاب کنید']);

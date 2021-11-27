@@ -51,7 +51,7 @@ if (!function_exists('generateAuthenticationEnvelope')) {
 }
 
 if (!function_exists('getIranKishToken')) {
-    function getIranKishToken($Amount,$orderId)
+    function getIranKishToken($Amount,$orderId,$factor_number)
     {
         $pubKey = config('IranKish.public_key');
         $terminalID = config('IranKish.terminalId');
@@ -62,7 +62,7 @@ if (!function_exists('getIranKishToken')) {
         $data["request"] = array(
             "acceptorId" => $acceptorId,
             "amount" => (int)$Amount,
-            "requestId" => uniqid(),
+            "requestId" => $factor_number,
             "paymentId" => (string)$orderId,
             "requestTimestamp" => time(),
             "revertUri" => config('IranKish.callback'),
