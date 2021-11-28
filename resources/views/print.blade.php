@@ -197,6 +197,7 @@ function convertNumbers($srting, $toPersian = true)
                 <P class=" text-center">
 
 
+
                 </P>
             </div>
         </div>
@@ -384,7 +385,7 @@ function convertNumbers($srting, $toPersian = true)
             </table>
             <br>
             <p>
-                الف- مبلغ مندرج شده در ردیف(۷) باید ظرف مهلت مقرر در ردیف (۱۱) به حساب بانکی مندرج در ردیف (۱۲) به نام
+                الف- مبلغ مندرج شده در ردیف (۷) باید ظرف مهلت مقرر در ردیف (۱۱) به حساب بانکی مندرج در ردیف (۱۲) به نام
                 شرکت
                 کویر تایر (سهامی عام) واریز و اصل فیش واریزی به همراه اصل گواهینامه ظرف مهلت قانونی مندرج در بند(۱۱) به
                 نشانی : استان خراسان جنوبی - شهرستان بیرجند - صندوق پستی ۸۷۸
@@ -395,8 +396,8 @@ function convertNumbers($srting, $toPersian = true)
             <br>
             <p style="font-weight: bold">
                 <span style="font-weight: bold">تذکر ۱:</span> کد شناسه واریز مختص هر سهامدار می باشد لذا در صورت واریز
-                وجه افزایش سرمایه با کد/شناسنامه ملی سهامدار دیگر ،مسئولیت در نظر نگرفتن مبلغ واریز شده به عهده شخص
-                سهامدار خواهد بود
+                وجه افزایش سرمایه با شناسه/کد ملی سهامدار دیگر ،مسئولیت در نظر نگرفتن مبلغ واریز شده در افزایش سرمایه به عهده شخص
+                سهامدار خواهد بود.
             </p>
             <br>
             <p style="font-weight: bold">
@@ -405,7 +406,7 @@ function convertNumbers($srting, $toPersian = true)
             </p>
             <br>
             <p>
-                ب- دارنده این گواهینامه طی مهلت مقرر در ردیف (۱۱) می تواند تمام و قسمتی از حق تقدم خود را منحصرا از طریق
+                ب- دارنده این گواهینامه طی مهلت مقرر در ردیف (۱۱) می تواند تمام و یا قسمتی از حق تقدم خود را منحصرا از طریق
                 شرکت بورس اوراق بهادار تهران واگذار نماید .
                 بدیهی است چنانچه از این گواهینامه در مهلت مندرج در ردیف (۱۱) توسط دارنده آن و یا شخصی که تمام یا قسمتی
                 از حق تقدم مندرج در ردیف (۲) به وی واگذاری شده است استفاده نگردد هیچ حقی نسبت به سهام قابل خرید مذکور
@@ -454,25 +455,25 @@ function convertNumbers($srting, $toPersian = true)
             <br>
             با امضاء ذیل این برگه به آن شرکت وکالت داده می شود مبلغ
             {{convertNumbers(number_format($account->wallet))}}
-            ربال از محل مطالبات حال شده (مندرج در ردیف ۶ گواهینامه) برداشت نموده و اوراق سهام مربوطه را به نام اینجانب /
+            ریال از محل مطالبات حال شده (مندرج در ردیف ۶ گواهینامه) برداشت نموده و اوراق سهام مربوطه را به نام اینجانب /
             این شرکت
             صادر نمایند
             <br>
 
             <div class="row">
                 <div class="col-md-4">
-                    <P class="text-center">
+                    <P class="text-justify">
                         نام و نام خانوادگی :
                         {{$account->first_name." ".$account->last_name}}
                     </P>
                 </div>
                 <div class="col-md-4">
-                    <p class=" text-center">
+                    <p class=" text-justify">
 
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class=" text-justify">
                         محل صدور :
                         {{$account['export']}}
 
@@ -481,41 +482,40 @@ function convertNumbers($srting, $toPersian = true)
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <P class="text-center">
+                    <P class="text-justify">
                         آدرس :
                         {{convertNumbers($account->address)}}
 
                     </P>
                 </div>
                 <div class="col-md-4">
-                    <p class=" text-center">
-                        تلفن :
-                        {{convertNumbers($account->phone)}}
-
+                    <p class=" text-justify">
+                        شماره شناسنامه/ثبت:
+                        {{convertNumbers($account->certificate_id)}}
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class="text-justify">
+                        تلفن :
+                        {{convertNumbers($account->phone)}}
 
-                        شماره شناسنامه/ثبت:
-                        {{convertNumbers($account->certificate_id)}}
                     </P>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4">
-                    <P class="text-center">
+                    <P class="text-justify">
 
                     </P>
                 </div>
                 <div class="col-md-4">
-                    <p class=" text-center">
+                    <p class=" text-justify">
 
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class="text-justify">
                         تاریخ :&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;/۱۴۰۰
 
 
@@ -534,7 +534,7 @@ function convertNumbers($srting, $toPersian = true)
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class=" text-justify">
 
                         مهر و امضا :
 
@@ -545,37 +545,37 @@ function convertNumbers($srting, $toPersian = true)
         <div class=" ">
             <br>
             <P style="font-weight: bold" class="text-justify">
-                فرم شماره (۲) مخصوص تامین وجه افزایش سرمایه از محل مطالبات حال شده و واریز نقدی توسط سهامدارن:
+                فرم شماره (۲) مخصوص تامین وجه افزایش سرمایه از محل مطالبات حال شده و واریز نقدی توسط سهامداران:
             </P>
             <br>
         </div>
         <div class="box text-justify">
             <br>
-            ضمن واریز .......................ریال (مندرج در ردیف ۷ گواهینامه ) طی فیش بانکی با کد شناسه
+            ضمن واریز .......................ریال (مندرج در ردیف ۷ گواهینامه) طی فیش بانکی با کد شناسه
             ..................... مورخ :&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;/۱۴۰۰ به حساب بانکی (مندرج در ردیف ۱۲
             گواهینامه ) بابت بهای اسمی تعداد ................ سهم قابل خرید (مندرج در ردیف ۲ گواهینامه ) به آن شرکت
             اجازه
             داده می شود مبلغ ................ ریال از محل مطالبات (مندرج در ردیف ۶ گواهینامه ) برداشت نموده و اوراق سهام
-            را به اینجانب / این شرکت صادر نمایند . (اصل فیش پیوست می باشد .)
+            را به نام اینجانب / این شرکت صادر نمایند . (اصل فیش پیوست می باشد .)
             <br>
 
             <div class="row">
                 <div class="col-md-4">
-                    <P class="text-center">
+                    <P class="text-justify">
                         نام و نام خانوادگی :
                         {{$account->first_name." ".$account->last_name}}
 
                     </P>
                 </div>
                 <div class="col-md-4">
-                    <p class=" text-center">
+                    <p class=" text-justify">
                         شماره شناسنامه/ثبت:
                         {{convertNumbers($account->certificate_id)}}
 
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class=" text-justify">
                         محل صدور :
                         {{$account['export']}}
 
@@ -585,7 +585,7 @@ function convertNumbers($srting, $toPersian = true)
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <P class="text-center">
+                    <P class="text-justify">
                         آدرس :
                         {{convertNumbers($account->address)}}
 
@@ -597,7 +597,7 @@ function convertNumbers($srting, $toPersian = true)
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class="text-justify">
                         تلفن :
                         {{convertNumbers($account->phone)}}
 
@@ -618,7 +618,7 @@ function convertNumbers($srting, $toPersian = true)
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class="text-justify">
                         تاریخ :&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;/۱۴۰۰
 
 
@@ -637,7 +637,7 @@ function convertNumbers($srting, $toPersian = true)
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <P class=" text-center">
+                    <P class=" text-justify">
 
                         مهر و امضا :
 
@@ -696,9 +696,9 @@ function convertNumbers($srting, $toPersian = true)
         <UL>
             <LI class="text-justify">
                 در صورت تمایل به استفاده از حق تقدم سهام جدید به نام خودتان و در حالتی که نیاز به واریز وجه (مبلغ مندرج
-                در ردیف ۷ گواهینامه )باشد فرم شماره (۲) را تکمیل و به همراه فیش واریز وجه به نشانی مندرج در بند
+                در ردیف ۷ گواهینامه) باشد فرم شماره (۲) را تکمیل و به همراه فیش واریز وجه به نشانی مندرج در بند
                 (الف) ارسال نمایید . کد شناسه واریز مختص هر سهامدار می باشد لذا در صورت واریز وجه افزایش سرمایه با
-                شناسه سهامدار دیگر ،مسئولیت در نظر گرفتن مبلغ واریز شده در افزایش سرمایه به عهده شخص سهامدار خواهد بود .
+                شناسه سهامدار دیگر ، مسئولیت در نظر گرفتن مبلغ واریز شده در افزایش سرمایه به عهده شخص سهامدار خواهد بود .
 
             </LI>
         </UL>

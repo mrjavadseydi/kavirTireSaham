@@ -174,6 +174,7 @@
                                     </div>
 
                                 </div>
+
                                 <h5 style="line-height: 25px;">
                                     با عنایت به مجوز افزایش سرمایه به شماره DPM-IOP-00A-120 مورخ 1400/07/12 سازمان بورس
                                     و
@@ -196,103 +197,164 @@
                                     <br>
                                     شرکت کویرتایر
                                 </h5>
-                                <div class="alert alert-info">
-                                    <p>سهامدار محترم جهت دریافت رسید خرید حق تقدم خود
-                                        <a href="{{route('print-resid')}}" target="_top"
-                                           style="font-weight: bolder;text-decoration: underline ; ">
-                                            بر روی
-                                            این
-                                            لینک کلیک کید
-                                        </a>
+                                <div class="table-responsive" style="{{$token!=null ? "display:none":''}} ">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>نوع پرداخت</th>
+                                                <th> تاریخ و ساعت پرداخت</th>
+                                                <th>مبلغ پرداختی با مطالبات(ریال)</th>
+                                                <th>مبلغ پرداختی نقدی(ریال)</th>
+                                                <th>شناسه ارجاع درگاه پرداخت(درصورت پرداخت اینترنتی)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
 
-                                    </p>
+                                            <tr>
+                                                <td>
+                                                    @if ($payment->gateway_id===null&&$payment->local_pay!==null)
+                                                        پرداخت از طریق مطالبات
+                                                    @else
+                                                        پرداخت از طریق مطالبات و نقدی
+                                                    @endif
+                                                </td>
+                                                <td>{{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($payment->created_at))->format('Y/m/d H:i')}}</td>
+
+                                                <td>
+                                                    {{number_format($payment->local_pay)}}
+                                                </td>
+                                                <td>
+                                                    @if($payment->gateway_id!=null)
+                                                        {{number_format(\App\Models\Gateway::whereId($payment->gateway_id)->first()->gateway_amount)}}
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    @if($payment->gateway_id!=null)
+
+                                                        {{\App\Models\Gateway::whereId($payment->gateway_id)->first()->systemTraceAuditNumber}}
+                                                    @endif
+
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
                                 </div>
-                            @elseif(!$payment)
-                                <br>
-                                <div class="text-center" style="color:black;" >
-                                    سهامدار گرامی، جناب آقای / سرکار خانم:
-                                    <span class="badge badge-info">
+
+                        </div>
+                        <hr>
+
+                        <div class="alert alert-info">
+                            <p>سهامدار محترم جهت دریافت رسید خرید حق تقدم خود
+                                <a href="{{route('print-resid')}}" target="_top"
+                                   style="font-weight: bolder;text-decoration: underline ; ">
+                                    بر روی
+                                    این
+                                    لینک کلیک کید
+                                </a>
+
+                            </p>
+                        </div>
+                        @elseif(!$payment)
+                            <br>
+                            <div class="text-center" style="color:black;">
+                                سهامدار گرامی، جناب آقای / سرکار خانم:
+                                <span class="badge badge-info">
                             {{$account->first_name . " " .$account->last_name}}
                             </span>
-                                    <span style="color: black">
+                                <span style="color: black">
 
                                     در صورت تمایل به انصراف از حق تقدم خود، بر روی دکمه زیر کلیک نموده و پس از آن شماره
                                     شبای خود را جهت دریافت مطالبات وارد نمایید:
                                                                       </span>
 
-                                    <br>
-                                    <br>
+                                <br>
+                                <br>
 
-                                    <div class="text-center ">
-                                        <div style="display: flex;align-content: center;align-items: center">
-                                            <input style="width: 40%;margin: 0 auto;min-width: 104px"
-                                                   class="form-control  @error('shaba') has-error @enderror "
-                                                   wire:model.lazy="shaba" placeholder="شماره شبا">
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-danger" wire:click="cancelMe">
-                                                انصراف از حق تقدم
-                                            </button>
-
-                                        </div>
+                                <div class="text-center ">
+                                    <div style="display: flex;align-content: center;align-items: center">
+                                        <input style="width: 40%;margin: 0 auto;min-width: 104px"
+                                               class="form-control  @error('shaba') has-error @enderror "
+                                               wire:model.lazy="shaba" placeholder="شماره شبا">
                                     </div>
-                                    @error('shaba')
-                                    <span class="text-danger">
+                                    <div>
+                                        <button class="btn btn-danger" wire:click="cancelMe">
+                                            انصراف از حق تقدم
+                                        </button>
+
+                                    </div>
+                                </div>
+                                @error('shaba')
+                                <span class="text-danger">
                                         {{$message}}
                                     </span>
-                                    @enderror
-                                </div>
-                            @elseif($payment&&$payment->local_pay==null&&$payment->gateway_id==null)
-                                جناب آقای / سرکار خانم:
-                                <span class="badge badge-info">
+                                @enderror
+                            </div>
+                        @elseif($payment&&$payment->local_pay==null&&$payment->gateway_id==null)
+                            جناب آقای / سرکار خانم:
+                            <span class="badge badge-info">
                             {{$account->first_name . " " .$account->last_name}}
                             </span>
-                                شما از حق تقدم خود انصراف داده اید !
-                            @endif
-                            @if(!$payment)
-                                <br>
-                                <p style="color: black;line-height: 30px">
-                                    * سهامدار گرامی، با توجه به محدودیت مبلغ پرداختی در درگاه های بانکی کشور، چنانچه
-                                    مبلغ پرداختی شما بیشتر از 50 میلیون تومان است، خواهشمند است مبلغ مورد نظر را به صورت
-                                    حضوری در بانک به حساب شمارۀ 321513393 اين شرکت نزد بانک رفاه کارگران شعبه آزادی کد
-                                    شعبه 1380 یا شماره شبای IR72-0130-1000-0000-0321-5133-93 واریز و مدارک آن را به آدرس
-                                    «استان خراسان جنوبی- بیرجند -صندوق پستی 878-97135 امور سهامداران شرکت کوير تاير»
-                                    ارسال فرمایید.
+                            شما از حق تقدم خود انصراف داده اید !
+                        @endif
+                        @if(!$payment)
+                            <br>
+                            <p style="color: black;line-height: 30px">
+                                * سهامدار گرامی، با توجه به محدودیت مبلغ پرداختی در درگاه های بانکی کشور، چنانچه
+                                مبلغ پرداختی شما بیشتر از 50 میلیون تومان است، خواهشمند است مبلغ مورد نظر را به صورت
+                                حضوری در بانک به حساب شمارۀ 321513393 اين شرکت نزد بانک رفاه کارگران شعبه آزادی کد
+                                شعبه 1380 یا شماره شبای IR72-0130-1000-0000-0321-5133-93 واریز و مدارک آن را به آدرس
+                                «استان خراسان جنوبی- بیرجند -صندوق پستی 878-97135 امور سهامداران شرکت کوير تاير»
+                                ارسال فرمایید.
 
-                                    <br>
-                                    هشدار: سهامدار گرامی، پس از ثبت اطلاعات و انتخاب نحوه پرداخت، امکان تغییر در آن وجود
-                                    ندارد. خواهشمند است در خصوص انتخاب نحوه پرداخت و سایر موارد دقت فرمایید.
-                                </p>
+                                <br>
+                                هشدار: سهامدار گرامی، پس از ثبت اطلاعات و انتخاب نحوه پرداخت، امکان تغییر در آن وجود
+                                ندارد. خواهشمند است در خصوص انتخاب نحوه پرداخت و سایر موارد دقت فرمایید.
+                            </p>
+                        @endif
+                            @if ($account->sign_up==0)
+                                <div class="alert alert-primary">
+                                    سهامدار محترم جهت ثبت  خوداظهاری حق تقدم بر روی
+                                    <a href="{{route('user.report')}}">
+                                        این لینک کلیک کنید
+                                    </a>
+                                </div>
                             @endif
-                        </div>
+
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-    <script>
+
+    </section>
+</div>
+<script>
 
 
-        ConvertNumberToPersion();
+    ConvertNumberToPersion();
 
 
-        function ConvertNumberToPersion() {
-            persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
+    function ConvertNumberToPersion() {
+        persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
 
-            function traverse(el) {
-                if (el.nodeType == 3) {
-                    var list = el.data.match(/[0-9]/g);
-                    if (list != null && list.length != 0) {
-                        for (var i = 0; i < list.length; i++)
-                            el.data = el.data.replace(list[i], persian[list[i]]);
-                    }
-                }
-                for (var i = 0; i < el.childNodes.length; i++) {
-                    traverse(el.childNodes[i]);
+        function traverse(el) {
+            if (el.nodeType == 3) {
+                var list = el.data.match(/[0-9]/g);
+                if (list != null && list.length != 0) {
+                    for (var i = 0; i < list.length; i++)
+                        el.data = el.data.replace(list[i], persian[list[i]]);
                 }
             }
-
-            traverse(document.body);
+            for (var i = 0; i < el.childNodes.length; i++) {
+                traverse(el.childNodes[i]);
+            }
         }
-    </script>
+
+        traverse(document.body);
+    }
+</script>
 </div>

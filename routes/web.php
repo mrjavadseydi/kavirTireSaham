@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::prefix('panel')->middleware('AcoountLogin')->group(function () {
     Route::get('/', \App\Http\Livewire\User\Panel::class)->name('user.panel');
+    Route::get('/self-report',\App\Http\Livewire\User\SelfReport::class)->name('user.report');
     Route::get('/print',function (){
         $account = session('account');
         return view('print',compact('account'));
@@ -48,6 +49,7 @@ Route::middleware('auth')->prefix('admin')->group(function (){
 Route::view('print','print');
 //Route::view('log')
 Route::get('/log',function (){
+//    \Illuminate\Support\Facades\Artisan::call('migrate');
     session(['account'=>\App\Models\Account::whereId(44578)->first()]);
-    return redirect(url('/print'));
+    return redirect(url('/panel'));
 });

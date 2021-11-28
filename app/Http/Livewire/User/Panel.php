@@ -15,6 +15,7 @@ class Panel extends Component
     public $token = null ;
     public function mount(){
         $this->account = session('account');
+
         $this->payment = Payment::where('account_id',$this->account['id'])->first();
         if (session()->has('payment')&&session('payment')=='success') {
             $this->dispatchBrowserEvent('toast', ['type' => 'success', 'msg' => 'پرداخت موفق !']);

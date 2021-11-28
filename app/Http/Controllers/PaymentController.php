@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account as Account;
 use App\Models\Gateway as Gateway;
 use App\Models\Payment as Payment;
+use App\Models\SelfReport;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -54,11 +55,20 @@ class PaymentController extends Controller
                 $gateway->update([
                     'status' => 1,
                 ]);
-                Payment::create([
-                    'account_id' => $account->id,
-                    'gateway_id' => $gateway->id,
-                    'local_pay' => $account->current_stock * 1000,
-                ]);
+                if($gateway->type==0){
+                    Payment::create([
+                        'account_id' => $account->id,
+                        'gateway_id' => $gateway->id,
+                        'local_pay' => $account->current_stock * 1000,
+                    ]);
+                }else{
+                    SelfReport::create([
+                        'account_id' => $account->id,
+                        'gateway_id' => $gateway->id,
+                        'count' =>$gateway->gateway_amount/100
+                    ]);
+                }
+
                 session(['payment' => 'success']);
                 return redirect(\route('user.panel'));
             }

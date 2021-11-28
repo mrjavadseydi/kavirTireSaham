@@ -54,7 +54,7 @@ class Accounts extends LivewireDatatable
             })->label('ورود؟')->filterable()->alignCenter()->searchable(),
             Column::callback(['payment_created','account_id','local_pay','gateway_id'], function ($payment_created,$account_id,$local_pay,$gateway_id) {
                 return $this->getPayStatus($payment_created,$account_id,$local_pay,$gateway_id);
-            })->label('پرداخت ')->alignCenter()->searchable(),
+            })->label('پرداخت ')->alignCenter()->filterable(),
 
         ];
     }

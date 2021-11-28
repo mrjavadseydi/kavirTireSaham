@@ -67,33 +67,94 @@ function convertNumbers($srting, $toPersian = true)
                 بسمه تعالی
             </h5>
         </div>
-        <h6 style="    line-height: 46px;" >
+        <span style="    line-height: 46px;">
             با عنایت به مجوز افزایش سرمایه به شماره DPM-IOP-00A-120 مورخ 1400/07/12 سازمان بورس
             و
             پیرو
             مصوبات مجمع فوق‌العاده مورخ 1400/07/28،
             بدینوسیله تایید می‌گردد
             مبلغ
-            <span >
+            <span style="font-weight: bolder">
                                     {{$payment->gateway_id==null?number_format($account->current_stock*1000):number_format($account->total)}}
                                 </span>
             ریال ،
-            توسط آقا/خانم {{$account->first_name . " " .$account->last_name}}
-            با کد ملی      {{$account->national_id}}
+            توسط
+            <span style="font-weight: bold">
+                        آقا/خانم {{$account->first_name . " " .$account->last_name}}
+            </span>
+
+            با
+                        <span style="font-weight: bold">
+
+            کد ملی      {{$account->national_id}}
+                                        </span>
+
             و کد بورسی
-            <span>
+            <span style="font-weight: bolder">
                                     {{$account->stock_number.$account->stock_alpha}}
                                 </span>
 
             بابت خرید حق تقدم پرداخت گردید.
             <br>
+                                            <div class="table-responsive">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>نوع پرداخت</th>
+                                                <th> تاریخ و ساعت پرداخت</th>
+                                                <th>مبلغ پرداختی با مطالبات(ریال)</th>
+                                                <th>مبلغ پرداختی نقدی(ریال)</th>
+                                                <th>شناسه ارجاع درگاه پرداخت</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            <tr>
+                                                <td>
+                                                    @if ($payment->gateway_id===null&&$payment->local_pay!==null)
+                                                        پرداخت از طریق مطالبات
+                                                    @else
+                                                        پرداخت از طریق مطالبات و نقدی
+                                                    @endif
+                                                </td>
+                                                <td>{{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($payment->created_at))->format('Y/m/d H:i')}}</td>
+
+                                                <td>
+                                                    {{number_format($payment->local_pay)}}
+                                                </td>
+                                                <td>
+                                                    @if($payment->gateway_id!=null)
+                                                        {{number_format(\App\Models\Gateway::whereId($payment->gateway_id)->first()->gateway_amount)}}
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    @if($payment->gateway_id!=null)
+
+                                                        {{\App\Models\Gateway::whereId($payment->gateway_id)->first()->systemTraceAuditNumber}}
+                                                    @endif
+
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+
             <div class="text-center">
+                لازم به ذکر است پس از تکمیل فرایند افزایش سرمایه ، حق تقدم به سهم تبدیل خواهد شد .
+                <br>
                 شرکت کویرتایر
                 <br>
-                <img src="{{asset('img/Mohr.png')}}" >
+                <img src="{{asset('img/Mohr.png')}}">
+                <br>
             </div>
 
-        </h6>
+        </span>
 
     </div>
     <br>
