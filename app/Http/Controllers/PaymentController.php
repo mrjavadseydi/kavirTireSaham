@@ -41,6 +41,7 @@ class PaymentController extends Controller
                     'systemTraceAuditNumber' => $request->systemTraceAuditNumber
                 ]);
                 $result = verifyPayment($request->retrievalReferenceNumber, $request->systemTraceAuditNumber, $request->token);
+
                 if ($result['responseCode'] != '00') {
                     $gateway->update([
                         'status' => $result['responseCode']
@@ -61,11 +62,15 @@ class PaymentController extends Controller
                         'gateway_id' => $gateway->id,
                         'local_pay' => $account->current_stock * 1000,
                     ]);
-                }else{
+                }elseif($gateway->type == 1){
                     SelfReport::create([
                         'account_id' => $account->id,
                         'gateway_id' => $gateway->id,
-                        'count' =>$gateway->gateway_amount/100
+                        'count' =>$gateway->gateway_amount/1000
+                    ]);
+                }elseif($gateway->type == 2){
+                    Payment::where('account_id',$account->id)->update([
+                        'gateway_id'=>$gateway->id
                     ]);
                 }
 

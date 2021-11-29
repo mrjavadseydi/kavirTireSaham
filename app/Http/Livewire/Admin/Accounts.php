@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Account;
 use App\Models\Payment;
+use App\Models\SelfReport;
 use App\Models\Summery;
 use Carbon\Carbon;
 use Mediconesystems\LivewireDatatables\Column;
@@ -55,6 +56,10 @@ class Accounts extends LivewireDatatable
             Column::callback(['payment_created','account_id','local_pay','gateway_id'], function ($payment_created,$account_id,$local_pay,$gateway_id) {
                 return $this->getPayStatus($payment_created,$account_id,$local_pay,$gateway_id);
             })->label('پرداخت ')->alignCenter()->filterable(),
+            Column::callback(['payment_created','account_id'], function ($payment_created,$account_id) {
+                    $report = SelfReport::where('account_id',$account_id)->sum('count');
+                    return $report;
+            })->label('تعداد سهام خود اظهاری ')->alignCenter(),
 
         ];
     }

@@ -30,7 +30,7 @@
                         @if ($token!=null)
                             <div class="text-center" style="text-align: center">
                                 <div style="margin: 0 auto" class="text-center">
-                                    <h4  class="text-center">
+                                    <h4 class="text-center">
                                         مبلغ قابل پرداخت برای
                                         {{number_format($count*1000)}}
                                         ریال
@@ -50,28 +50,29 @@
                             </div>
                         @else
                             <p>
-                                سهامدار محترم جهت خود اظهاری سهام حق تقدم خود لطفا در این فرم زیر تعداد سهام مورد نظر
-                                خود را اعلام کنید:
+                                سهامدار محترم، در صورتی‌که حق تقدم عرضه شده در شرکت بورس اوراق بهادار تهران را خریداری نموده‌اید، لطفاً تعداد سهام حق تقدم خریداری شده را در کادر وارد نموده و پس از آن، بر روی «پرداخت» کلیک نمایید:
                             </p>
                             <div class="text-center ">
-                                @if ($count>0)
-                                    <h6>
-                                        مبلغ قابل پرداخت :
-                                        {{number_format($count*1000)}}
-                                        ریال
-                                    </h6>
-                                @endif
+
 
                                 <div style="display: flex;align-content: center;align-items: center">
                                     <input style="width: 40%;margin: 0 auto;min-width: 104px"
                                            class="form-control  @error('shaba') has-error @enderror "
-                                           wire:model.lazy="count" type="number" min="1" placeholder="تعداد حق تقدم">
+                                           wire:model="count" type="number" min="1" placeholder="تعداد حق تقدم">
                                 </div>
                                 <div>
                                     <input type="submit" class="btn btn-success" value="تایید و پرداخت"
                                            wire:click="toGateWay">
+                                    <div class="text-center">
 
-
+                                        @if ($count>0)
+                                            <h5>
+                                                مبلغ قابل پرداخت :
+                                                {{number_format($count*1000)}}
+                                                ریال
+                                            </h5>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -88,34 +89,34 @@
                                             <th> مبلغ</th>
                                             <th>زمان</th>
                                             <th>کد رهگیری</th>
-                                            </tr>
+                                        </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($selfReport as $self)
-                                        <tr>
-                                            <td>{{$self->count}}</td>
-                                            <td>{{number_format($self->count*1000)}}
-                                            ریال
-                                            </td>
-                                            <td>{{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($self->created_at))->format('Y/m/d H:i')}}</td>
-                                            <td>{{\App\Models\Gateway::whereId($self->gateway_id)->first()->systemTraceAuditNumber}}</td>
-                                        </tr>
+                                            <tr>
+                                                <td>{{$self->count}}</td>
+                                                <td>{{number_format($self->count*1000)}}
+                                                    ریال
+                                                </td>
+                                                <td>{{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($self->created_at))->format('Y/m/d H:i')}}</td>
+                                                <td>{{\App\Models\Gateway::whereId($self->gateway_id)->first()->systemTraceAuditNumber}}</td>
+                                            </tr>
                                         @endforeach
                                         </tbody>
 
                                     </table>
                                 </div>
 
-                                </div>
-
                             </div>
 
-                        @endif
-
-
                     </div>
+
+                    @endif
+
+
                 </div>
             </div>
+
         </section>
     </div>
     <script>

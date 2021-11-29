@@ -27,12 +27,24 @@
             <div class="content-body">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-
-                        @if (!$payment)
-
+                        @if (session()->has('payment')&&session()->get('payment')=="success")
+                            @php(session(['payment'=>null]))
+                            <div class="alert alert-success">
+                                <p>
+                                    پرداخت شما موفق بود!
+                                </p>
+                            </div>
+                        @endif
                             @if ($token!=null)
                                 <div class="text-center" style="text-align: center">
+                                    <div style="margin: 0 auto" class="text-center">
+                                        <h4 class="text-center">
+                                            مبلغ قابل پرداخت برای
+                                            {{number_format($account->withdraw)}}
+                                            ریال
 
+                                        </h4>
+                                    </div>
                                     <img src="{{asset('logo-red.png')}}" class="img-responsive" style="margin: 0 auto"/>
                                     <br>
                                     <form action="https://ikc.shaparak.ir/iuiv3/IPG/Index/" method="POST"
@@ -43,6 +55,9 @@
                                 </div>
 
                             @endif
+                        @if (!$payment)
+
+
 
                             <div class="table-responsive" style="{{$token!=null ? "display:none":''}} ">
                                 <div class="table-responsive">
@@ -170,6 +185,22 @@
                                                     ریال
                                                 </th>
                                             </tr>
+                                            @if($account->withdraw !=0 && $payment->gateway_id==null )
+
+                                                <tr>
+                                                    <th>پرداخت از طریق مطالبات و آورده نقدی</th>
+                                                    <th>
+                                                        <divdiv class="text-center">
+                                                            <button class="btn btn-success" wire:click="getSecondToken()">
+                                                                پرداخت از طریق مطالبات و اورده نقدی(
+                                                                {{number_format($account->withdraw)}}
+                                                                ریال
+                                                                )
+                                                            </button>
+                                                        </divdiv>
+                                                    </th>
+                                                </tr>
+                                            @endif
                                         </table>
                                     </div>
 
@@ -260,7 +291,7 @@
 
                             </p>
                         </div>
-                        @elseif(!$payment)
+                        @elseif(!$payment &&$account->sign_up==0)
                             <br>
                             <div class="text-center" style="color:black;">
                                 سهامدار گرامی، جناب آقای / سرکار خانم:
@@ -319,7 +350,7 @@
                         @endif
                             @if ($account->sign_up==0)
                                 <div class="alert alert-primary">
-                                    سهامدار محترم جهت ثبت  خوداظهاری حق تقدم بر روی
+                                    سهامدار محترم، در صورتی‌که حق تقدم عرضه شده در شرکت بورس اوراق بهادار تهران را خریداری نموده‌اید، جهت پرداخت مبلغ افزایش سرمایه،
                                     <a href="{{route('user.report')}}">
                                         این لینک کلیک کنید
                                     </a>

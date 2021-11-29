@@ -44,12 +44,13 @@ Route::middleware('auth')->prefix('admin')->group(function (){
     Route::get('/panel',\App\Http\Livewire\Admin\Status::class)->name('admin.panel');
     Route::get('/payments',\App\Http\Livewire\Admin\Payment::class)->name('admin.payments');
     Route::get('/users',\App\Http\Livewire\Admin\Panel::class)->name('admin.users');
-
+    Route::get('/pay',\App\Http\Livewire\Admin\Pay::class)->name('admin.paylist');
 });
 Route::view('print','print');
 //Route::view('log')
 Route::get('/log',function (){
 //    \Illuminate\Support\Facades\Artisan::call('migrate');
-    session(['account'=>\App\Models\Account::whereId(44578)->first()]);
+//    session(['account'=>\App\Models\Account::whereId(44578)->first()]);
+    session(['account'=>\App\Models\Account::whereId(35444)->first()]);
     return redirect(url('/panel'));
 });
