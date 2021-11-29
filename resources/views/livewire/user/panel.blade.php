@@ -35,26 +35,26 @@
                                 </p>
                             </div>
                         @endif
-                            @if ($token!=null)
-                                <div class="text-center" style="text-align: center">
-                                    <div style="margin: 0 auto" class="text-center">
-                                        <h4 class="text-center">
-                                            مبلغ قابل پرداخت برای
-                                            {{number_format($account->withdraw)}}
-                                            ریال
+                        @if ($token!=null)
+                            <div class="text-center" style="text-align: center">
+                                <div style="margin: 0 auto" class="text-center">
+                                    <h4 class="text-center">
+                                        مبلغ قابل پرداخت برای
+                                        {{number_format($account->withdraw)}}
+                                        ریال
 
-                                        </h4>
-                                    </div>
-                                    <img src="{{asset('logo-red.png')}}" class="img-responsive" style="margin: 0 auto"/>
-                                    <br>
-                                    <form action="https://ikc.shaparak.ir/iuiv3/IPG/Index/" method="POST"
-                                          class="text-center">
-                                        <input type="hidden" name="tokenIdentity" value="{{$token}}"/>
-                                        <input type="submit" class="btn btn-lg btn-info " value="ورود به درگاه پرداخت"/>
-                                    </form>
+                                    </h4>
                                 </div>
+                                <img src="{{asset('logo-red.png')}}" class="img-responsive" style="margin: 0 auto"/>
+                                <br>
+                                <form action="https://ikc.shaparak.ir/iuiv3/IPG/Index/" method="POST"
+                                      class="text-center">
+                                    <input type="hidden" name="tokenIdentity" value="{{$token}}"/>
+                                    <input type="submit" class="btn btn-lg btn-info " value="ورود به درگاه پرداخت"/>
+                                </form>
+                            </div>
 
-                            @endif
+                        @endif
                         @if (!$payment)
 
 
@@ -133,18 +133,19 @@
 
                                     </table>
                                 </div>
-                                <div class="alert alert-info">
-                                    <p>سهامدار محترم جهت دریافت برگه حق تقدم
-                                        <a href="{{route('print')}}" target="_top"
-                                           style="font-weight: bolder;text-decoration: underline ; ">
-                                            بر روی
-                                            این
-                                            لینک کلیک کنید
-                                        </a>
+                                @if( $account->sign_up==0)
+                                    <div class="alert alert-info">
+                                        <p>سهامدار محترم جهت دریافت برگه حق تقدم
+                                            <a href="{{route('print')}}" target="_top"
+                                               style="font-weight: bolder;text-decoration: underline ; ">
+                                                بر روی
+                                                این
+                                                لینک کلیک کنید
+                                            </a>
 
-                                    </p>
-                                </div>
-
+                                        </p>
+                                    </div>
+                                @endif
                             </div>
                         @endif
                         <div style="{{$token!=null ? "display:none":''}} ">
@@ -191,7 +192,8 @@
                                                     <th>پرداخت از طریق مطالبات و آورده نقدی</th>
                                                     <th>
                                                         <divdiv class="text-center">
-                                                            <button class="btn btn-success" wire:click="getSecondToken()">
+                                                            <button class="btn btn-success"
+                                                                    wire:click="getSecondToken()">
                                                                 پرداخت از طریق مطالبات و اورده نقدی(
                                                                 {{number_format($account->withdraw)}}
                                                                 ریال
@@ -348,44 +350,45 @@
                                 ندارد. خواهشمند است در خصوص انتخاب نحوه پرداخت و سایر موارد دقت فرمایید.
                             </p>
                         @endif
-                            @if ($account->sign_up==0)
-                                <div class="alert alert-primary">
-                                    سهامدار محترم، در صورتی‌که حق تقدم عرضه شده در شرکت بورس اوراق بهادار تهران را خریداری نموده‌اید، جهت پرداخت مبلغ افزایش سرمایه،
-                                    <a href="{{route('user.report')}}">
-                                        این لینک کلیک کنید
-                                    </a>
-                                </div>
-                            @endif
+                        @if ($account->sign_up==0)
+                            <div class="alert alert-primary">
+                                سهامدار محترم، در صورتی‌که حق تقدم عرضه شده در شرکت بورس اوراق بهادار تهران را خریداری
+                                نموده‌اید، جهت پرداخت مبلغ افزایش سرمایه،
+                                <a href="{{route('user.report')}}">
+                                    این لینک کلیک کنید
+                                </a>
+                            </div>
+                        @endif
 
                     </div>
                 </div>
             </div>
 
-    </section>
-</div>
-<script>
+        </section>
+    </div>
+    <script>
 
 
-    ConvertNumberToPersion();
+        ConvertNumberToPersion();
 
 
-    function ConvertNumberToPersion() {
-        persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
+        function ConvertNumberToPersion() {
+            persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
 
-        function traverse(el) {
-            if (el.nodeType == 3) {
-                var list = el.data.match(/[0-9]/g);
-                if (list != null && list.length != 0) {
-                    for (var i = 0; i < list.length; i++)
-                        el.data = el.data.replace(list[i], persian[list[i]]);
+            function traverse(el) {
+                if (el.nodeType == 3) {
+                    var list = el.data.match(/[0-9]/g);
+                    if (list != null && list.length != 0) {
+                        for (var i = 0; i < list.length; i++)
+                            el.data = el.data.replace(list[i], persian[list[i]]);
+                    }
+                }
+                for (var i = 0; i < el.childNodes.length; i++) {
+                    traverse(el.childNodes[i]);
                 }
             }
-            for (var i = 0; i < el.childNodes.length; i++) {
-                traverse(el.childNodes[i]);
-            }
-        }
 
-        traverse(document.body);
-    }
-</script>
+            traverse(document.body);
+        }
+    </script>
 </div>

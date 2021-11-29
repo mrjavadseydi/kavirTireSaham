@@ -42,8 +42,9 @@ Route::get('/logout', function () {
 Route::post('/payment', [\App\Http\Controllers\PaymentController::class,'payment']);
 Route::middleware('auth')->prefix('admin')->group(function (){
     Route::get('/panel',\App\Http\Livewire\Admin\Status::class)->name('admin.panel');
-    Route::get('/payments',\App\Http\Livewire\Admin\Payment::class)->name('admin.payments');
+    Route::get('/payments',\App\Http\Livewire\Admin\Pay::class)->name('admin.payments');
     Route::get('/users',\App\Http\Livewire\Admin\Panel::class)->name('admin.users');
+    Route::get('/self-report',\App\Http\Livewire\Admin\SelfReport::class)->name('admin.self-report');
     Route::get('/pay',\App\Http\Livewire\Admin\Pay::class)->name('admin.paylist');
 });
 Route::view('print','print');

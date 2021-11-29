@@ -113,6 +113,12 @@
                         <span class="title">پرداختی ها</span>
                     </a>
                 </li>
+                <li class="">
+                    <a href="{{route('admin.self-report')}}" class="sidebarItem">
+                        <i class="fa fa-eraser"></i>
+                        <span class="title">خوداظهاری</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
