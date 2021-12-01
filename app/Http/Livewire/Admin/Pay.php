@@ -2,19 +2,23 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Exports\paymentsExport;
 use App\Models\Account;
 use App\Models\Gateway;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Pay extends Component
 {
     use WithPagination;
 
-    public $payment;
-    public $stock_number = null, $stock_alpha = null, $national_id = null, $payment_type = null, $tracking_number = null, $order_id = null, $factor_id = null;
     protected $paginationTheme = 'simple-tailwind';
-    protected $queryString = ['stock_number', 'stock_alpha', 'national_id', 'payment_type', 'tracking_number', 'order_id', 'factor_id'];
+
+    public $payment;
+    public $stock_number = null, $stock_alpha = null, $national_id = null, $payment_type = null, $tracking_number = null, $order_id = null, $factor_id = null, $date = null, $excel = null, $todate = null;
+    protected $queryString = ['stock_number', 'stock_alpha', 'national_id', 'payment_type', 'tracking_number', 'order_id', 'factor_id', 'date', 'excel', 'todate'];
 
     public function render()
     {
@@ -47,7 +51,7 @@ class Pay extends Component
         }
         if ($this->tracking_number) {
             $track = Gateway::where('tracking_number', $this->tracking_number)->pluck('id');
-            $this->payment = $this->payment->whereIn('gateway_id', $track);
+            $payment = $payment->whereIn('gateway_id', $track);
         }
         if ($this->order_id) {
             $track = Gateway::where('systemTraceAuditNumber', $this->order_id)->pluck('id');
@@ -60,17 +64,34 @@ class Pay extends Component
         if ($this->payment_type) {
             switch ($this->payment_type) {
                 case "1":
-                    $payment = $payment->where([['gateway_id','!=',null],['local_pay','!=',null],['local_pay','!=',0]]);
+                    $payment = $payment->where([['gateway_id', '!=', null], ['local_pay', '!=', null], ['local_pay', '!=', 0]]);
                     break;
-                    case "2":
-                    $payment = $payment->where([['gateway_id','=',null],['local_pay','!=',null],['local_pay','!=',0]]);
+                case "2":
+                    $payment = $payment->where([['gateway_id', '=', null], ['local_pay', '!=', null], ['local_pay', '!=', 0]]);
                     break;
-                    case "3":
-                    $payment = $payment->where([['gateway_id','=',null],['local_pay','=',null]]);
+                case "3":
+                    $payment = $payment->where([['gateway_id', '=', null], ['local_pay', '=', null]]);
                     break;
             }
         }
+        if ($this->date) {
+            $timestamp = $this->date / 1000;
+            if ($timestamp < time() - 1000) {
+                $formated = Carbon::createFromTimestamp($timestamp)->toDateTimeString();
+                $payment = $payment->where('updated_at', '>', $formated);
+            }
 
+        }
+        if ($this->todate) {
+            $timestamp = $this->todate / 1000;
+            $formated = Carbon::createFromTimestamp($timestamp)->toDateTimeString();
+            $payment = $payment->where('updated_at', '<', $formated);
+        }
+        if ($this->excel !== null) {
+            $name = uniqid() . time() . ".xlsx";
+            Excel::store(new paymentsExport($payment->get()), $name, 'public_html');
+            $this->redirect(asset("exports/" . $name));
+        }
         return $payment;
     }
 }

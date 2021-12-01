@@ -15,7 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
-
+    <link rel="icon" sizes="32x32" href="{{asset('favicon-32.png')}}" type="image/png"/>
+    <link rel="icon" sizes="64x64" href="{{asset('favicon-64.png')}}" type="image/png"/>
+    <link rel="icon" sizes="96x96" href="{{asset('favicon-96.png')}}" type="image/png"/>
     <!-- CORE CSS FRAMEWORK - START -->
     <link href="{{asset('assets/plugins/pace/pace-theme-flash.css')}}" rel="stylesheet" type="text/css" media="screen"/>
     <link href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>

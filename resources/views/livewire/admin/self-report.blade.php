@@ -1,5 +1,5 @@
 <div>
-    <div style="display: none">
+    <div >
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <section class="box ">
                 <header class="panel_header">
@@ -11,22 +11,14 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <form>
                                 <div class="row">
-                                    <div class="col-md-2 p-1">
+                                    <div class="col-md-4 p-1">
                                         <input name="stock_number" class="form-control" type="number" placeholder="بخش عددی کد بورسی" value="{{request()->has('stock_number')? request('stock_number'):""}}">
                                     </div>
-                                    <div class="col-md-2 p-1">
+                                    <div class="col-md-4 p-1">
                                         <input name="stock_alpha" class="form-control" placeholder="بخش حرفی کد بورسی"  value="{{request()->has('stock_alpha')? request('stock_alpha'):""}}">
                                     </div>
                                     <div class="col-md-4 p-1">
                                         <input name="national_id" class="form-control" type="number" placeholder="کد ملی"  value="{{request()->has('national_id')? request('national_id'):""}}">
-                                    </div>
-                                    <div class="col-md-4 p-1">
-                                        <select class="form-control" name="payment_type">
-                                            <option value="0">وضعیت پرداخت</option>
-                                            <option  value="3" {{(request()->has('payment_type')&& request('payment_type')=="3")?"selected":""}}>انصراف</option>
-                                            <option  value="2" {{(request()->has('payment_type')&& request('payment_type')=="2")?"selected":""}}>پرداخت از مطالبات</option>
-                                            <option  value="1" {{(request()->has('payment_type')&& request('payment_type')=="1")?"selected":""}}>پرداخت از مطالبات و اورده نقدی</option>
-                                        </select>
                                     </div>
                                     <div class="col-md-4 p-1">
                                         <input name="tracking_number" class="form-control" placeholder="کد پیگیری"  value="{{request()->has('tracking_number')? request('tracking_number'):""}}">
@@ -38,8 +30,21 @@
                                         <input name="factor_id" class="form-control" placeholder="شماره فاکتور"  value="{{request()->has('factor_id')? request('factor_id'):""}}">
                                     </div>
 
+                                    <div class="col-md-4 p-1">
+                                        از تاریخ
+                                        <input class="form-control datepicker">
+                                        <input style="display: none" class="realdate" name="date">
+                                    </div>
+                                    <div class="col-md-4 p-1">
+                                        تا تاریخ
+                                        <input class="form-control datepicker1">
+                                        <input style="display: none" class="realdate1" name="todate">
+                                    </div>
+
                                 </div>
                                 <input type="submit" class="btn btn-success" value="فیلتر کن">
+                                <input type="submit" class="btn btn-outline-success" name="excel" value="خروجی اکسل">
+
                             </form>
                         </div>
                     </div>

@@ -64,15 +64,15 @@
                                     <table class="table table-bordered table-striped">
                                         <tr>
                                             <th>تعداد پذیره (تعداد سهم )</th>
-                                            <th>{{$account->all_stock}}</th>
+                                            <th>{{number_format($account->all_stock)}}</th>
                                         </tr>
                                         <tr>
                                             <th> تعداد پذیره مطالبات</th>
-                                            <th>{{$account->current_stock}}</th>
+                                            <th>{{number_format($account->current_stock)}}</th>
                                         </tr>
                                         <tr>
                                             <th>تعداد پذیره نقدی</th>
-                                            <th>{{$account->money_current_stock}}</th>
+                                            <th>{{number_format($account->money_current_stock)}}</th>
                                         </tr>
                                         <tr>
                                             <th>ارزش هر حق تقدم</th>
@@ -105,7 +105,7 @@
                                                         <button class="btn btn-success" wire:click="OnlyWallet()">
                                                             پرداخت از طرق مطالبات
                                                             (
-                                                            {{$account->current_stock}}
+                                                            {{number_format($account->current_stock)}}
                                                             سهم
                                                             )
                                                         </button>
@@ -121,7 +121,7 @@
                                                 <th>
                                                     <divdiv class="text-center">
                                                         <button class="btn btn-success" wire:click="getToken()">
-                                                            پرداخت از طریق مطالبات و اورده نقدی(
+                                                            پرداخت از طریق مطالبات و آورده نقدی(
                                                             {{number_format($account->withdraw)}}
                                                             ریال
                                                             )
@@ -155,15 +155,15 @@
                                         <table class="table table-bordered table-striped">
                                             <tr>
                                                 <th>تعداد پذیره (تعداد سهم )</th>
-                                                <th>{{$account->all_stock}}</th>
+                                                <th>{{number_format($account->all_stock)}}</th>
                                             </tr>
                                             <tr>
                                                 <th> تعداد پذیره مطالبات</th>
-                                                <th>{{$account->current_stock}}</th>
+                                                <th>{{number_format($account->current_stock)}}</th>
                                             </tr>
                                             <tr>
                                                 <th>تعداد پذیره نقدی</th>
-                                                <th>{{$account->money_current_stock}}</th>
+                                                <th>{{number_format($account->money_current_stock)}}</th>
                                             </tr>
                                             <tr>
                                                 <th>ارزش هر حق تقدم</th>
@@ -194,7 +194,7 @@
                                                         <divdiv class="text-center">
                                                             <button class="btn btn-success"
                                                                     wire:click="getSecondToken()">
-                                                                پرداخت از طریق مطالبات و اورده نقدی(
+                                                                پرداخت از طریق  آورده نقدی(
                                                                 {{number_format($account->withdraw)}}
                                                                 ریال
                                                                 )
@@ -239,7 +239,9 @@
                                                 <th> تاریخ و ساعت پرداخت</th>
                                                 <th>مبلغ پرداختی با مطالبات(ریال)</th>
                                                 <th>مبلغ پرداختی نقدی(ریال)</th>
-                                                <th>شناسه ارجاع درگاه پرداخت(درصورت پرداخت اینترنتی)</th>
+                                                <th>شناسه ارجاع درگاه پرداخت</th>
+                                                <th>تعداد سهام خود اظهاری</th>
+                                                <th>مجموع سهام پرداختی</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -252,7 +254,7 @@
                                                         پرداخت از طریق مطالبات و نقدی
                                                     @endif
                                                 </td>
-                                                <td>{{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($payment->created_at))->format('Y/m/d H:i')}}</td>
+                                                <td>{{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($payment->updated_at))->format('Y/m/d H:i')}}</td>
 
                                                 <td>
                                                     {{number_format($payment->local_pay)}}
@@ -269,6 +271,16 @@
                                                         {{\App\Models\Gateway::whereId($payment->gateway_id)->first()->systemTraceAuditNumber}}
                                                     @endif
 
+                                                </td>
+                                                <td>
+                                                    {{\App\Models\SelfReport::where('account_id',$account->id)->sum('count')}}
+                                                </td>
+                                                <td>
+                                                    @if ($payment->gateway_id===null&&$payment->local_pay!==null)
+                                                        {{\App\Models\SelfReport::where('account_id',$account->id)->sum('count')+$account->current_stock}}
+                                                    @else
+                                                        {{\App\Models\SelfReport::where('account_id',$account->id)->sum('count')+$account->all_stock}}
+                                                    @endif
                                                 </td>
                                             </tr>
 
@@ -359,6 +371,11 @@
                                 </a>
                             </div>
                         @endif
+
+                        <div class="alert alert-warning">
+                            سهامدار گرامی، در صورت پرداخت مبلغ افزایش سرمایه به صورت اینترنتی از طریق سامانه، نیازی به
+                            ارسال مدارک نمی‌باشد.
+                        </div>
 
                     </div>
                 </div>

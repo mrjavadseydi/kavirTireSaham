@@ -15,7 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
-
+    <link rel="icon" sizes="32x32" href="{{asset('favicon-32.png')}}" type="image/png"/>
+    <link rel="icon" sizes="64x64" href="{{asset('favicon-64.png')}}" type="image/png"/>
+    <link rel="icon" sizes="96x96" href="{{asset('favicon-96.png')}}" type="image/png"/>
     <!-- CORE CSS FRAMEWORK - START -->
     <link href="{{asset('assets/plugins/pace/pace-theme-flash.css')}}" rel="stylesheet" type="text/css" media="screen"/>
     <link href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>
@@ -41,8 +43,9 @@
             background: #32323aeb;
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@latest/dist/css/persian-datepicker.min.css">
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
-@livewireStyles
+    @livewireStyles
 </head>
 <!-- END HEAD -->
 
@@ -130,19 +133,45 @@
             {{$slot}}
         </section>
     </section>
-</div>
-</div>
-<script src="{{asset('assets/js/jquery-1.11.2.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/js/jquery.easing.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/plugins/pace/pace.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/plugins/viewport/viewportchecker.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/js/scripts.js')}}" type="text/javascript"></script>
+    <livewire:persian-number />
 
-<script src="{{asset('assets/plugins/sparkline-chart/jquery.sparkline.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/js/chart-sparkline.js')}}" type="text/javascript"></script>
-@livewireScripts
+    <script src="{{asset('assets/js/jquery-1.11.2.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/jquery.easing.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/plugins/pace/pace.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js')}}"
+            type="text/javascript"></script>
+    <script src="{{asset('assets/plugins/viewport/viewportchecker.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/scripts.js')}}" type="text/javascript"></script>
+
+    <script src="{{asset('assets/plugins/sparkline-chart/jquery.sparkline.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/chart-sparkline.js')}}" type="text/javascript"></script>
+
+    <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
+    <script src="https://unpkg.com/persian-date@latest/dist/persian-date.min.js"></script>
+    <script>
+
+        $('.datepicker').persianDatepicker({
+            altField: '.realdate',
+            timePicker: {
+                enabled: true,
+                meridiem: {
+                    enabled: true
+                }
+            }
+        });
+        $('.datepicker1').persianDatepicker({
+            altField: '.realdate1',
+            timePicker: {
+                enabled: true,
+                meridiem: {
+                    enabled: true
+                }
+            }
+        });
+
+    </script>
+    @livewireScripts
     <script src="{{ asset('js/app.js') }}" defer></script>
 
 </body>
