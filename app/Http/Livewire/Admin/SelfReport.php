@@ -74,7 +74,7 @@ class SelfReport extends Component
         }
         if ($this->date) {
             $timestamp = $this->date / 1000;
-            if ($timestamp < time() - 1000) {
+            if ($timestamp <  (time() - 600)) {
                 $formated = Carbon::createFromTimestamp($timestamp)->toDateTimeString();
                 $payment = $payment->where('updated_at', '>', $formated);
             }

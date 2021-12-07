@@ -129,7 +129,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($payment->created_at))->format('Y/m/d H:i')}}
+                                                    {{\Morilog\Jalali\Jalalian::fromCarbon(new Carbon\Carbon($payment->updated_at))->format('Y/m/d H:i')}}
                                                 </td>
                                                 <td>
                                                     {{number_format($payment->local_pay)}}
