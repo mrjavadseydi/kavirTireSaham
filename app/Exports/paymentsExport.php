@@ -5,7 +5,7 @@ namespace App\Exports;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-
+use Morilog\Jalali\Jalalian;
 class paymentsExport implements FromArray, WithHeadings
 {
     public $payments;
@@ -46,7 +46,7 @@ class paymentsExport implements FromArray, WithHeadings
                 $payment->account->first_name . " " . $payment->account->last_name,
                 $payment->account->national_id,
                 $pay_type,
-                \Morilog\Jalali\Jalalian::fromCarbon(new Carbon($payment->created_at))->format('Y/m/d H:i'),
+                Jalalian::fromCarbon(new Carbon($payment->created_at))->format('Y/m/d H:i'),
                 number_format($payment->local_pay),
                 $amount,
                 $tracking,

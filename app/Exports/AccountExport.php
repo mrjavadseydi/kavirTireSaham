@@ -2,6 +2,8 @@
 
 namespace App\Exports;
 
+use App\Models\Payment as Payment;
+use App\Models\SelfReport as SelfReport;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -9,6 +11,11 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class AccountExport implements FromArray, WithHeadings
 {
     public $accounts;
+
+    public function __construct($accounts)
+    {
+        $this->accounts = $accounts;
+    }
 
     public function headings(): array
     {
@@ -34,13 +41,12 @@ class AccountExport implements FromArray, WithHeadings
 
     public function getData()
     {
-        $accounts =Cache::pull('accountsExport');
         $arr = [];
-        foreach ($accounts as $i => $account) {
+        foreach ($this->accounts as $i => $account) {
             $current_stock = 0;
             $money_current_stock = 0;
             $account->sign_up == 1 ? $signup = "خود کاربر" : $signup = "سازمان بورس";
-            if ($payment = \App\Models\Payment::where('account_id', $account->id)->first()) {
+            if ($payment = Payment::where('account_id', $account->id)->first()) {
                 if ($payment->gateway_id === null && $payment->local_pay === null) {
                     $current_stock = 0;
                     $money_current_stock = 0;
@@ -48,16 +54,16 @@ class AccountExport implements FromArray, WithHeadings
                 } elseif ($payment->gateway_id === null && $payment->local_pay !== null) {
                     $current_stock = 0;
                     $money_current_stock = $account->current_stock;
-                    $count_all = \App\Models\SelfReport::where('account_id', $account->id)->sum('count') + $account->current_stock;
+                    $count_all = SelfReport::where('account_id', $account->id)->sum('count') + $account->current_stock;
                 } elseif ($payment->gateway_id !== null && $payment->local_pay !== null) {
                     $current_stock = $account->money_current_stock;
                     $money_current_stock = $account->current_stock;
-                    $count_all = \App\Models\SelfReport::where('account_id', $account->id)->sum('count') + $account->all_stock;
+                    $count_all = SelfReport::where('account_id', $account->id)->sum('count') + $account->all_stock;
                 }
 
             } else {
 
-                $count_all = \App\Models\SelfReport::where('account_id', $account->id)->sum('count');
+                $count_all = SelfReport::where('account_id', $account->id)->sum('count');
             }
             $arr[$i] = [
                 $account->stock_alpha . $account->stock_number
@@ -77,7 +83,7 @@ class AccountExport implements FromArray, WithHeadings
                 ,
                 $money_current_stock
                 ,
-                \App\Models\SelfReport::where('account_id', $account->id)->sum('count')
+                SelfReport::where('account_id', $account->id)->sum('count')
                 ,
                 $count_all
             ];

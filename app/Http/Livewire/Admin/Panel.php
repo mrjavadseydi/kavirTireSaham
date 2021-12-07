@@ -62,9 +62,8 @@ class Panel extends Component
             }
         }
         if ($this->excel!==null) {
-            Cache::put('accountsExport',$accounts->get());
             $name = uniqid().time().".xlsx";
-            Excel::store(new AccountExport(),$name,'public_html');
+            Excel::store(new AccountExport($accounts->get()),$name,'public_html');
             $this->redirect(asset("exports/".$name));
         }
         return $accounts;
