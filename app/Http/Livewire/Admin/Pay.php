@@ -38,27 +38,27 @@ class Pay extends Component
     public function filter($payment)
     {
         if ($this->stock_number) {
-            $accounts = Account::where('stock_number', $this->stock_number)->pluck('id');
+            $accounts = Account::where('stock_number', 'like', '%'.$this->stock_number.'%')->pluck('id');
             $payment = $payment->whereIn('account_id', $accounts);
         }
         if ($this->stock_alpha) {
-            $accounts = Account::where('stock_alpha', $this->stock_alpha)->pluck('id');
+            $accounts = Account::where('stock_alpha','like', '%'. $this->stock_alpha)->pluck('id');
             $payment = $payment->whereIn('account_id', $accounts);
         }
         if ($this->national_id) {
-            $accounts = Account::where('national_id', $this->national_id)->pluck('id');
+            $accounts = Account::where('national_id', 'like', '%'.$this->national_id.'%')->pluck('id');
             $payment = $payment->whereIn('account_id', $accounts);
         }
         if ($this->tracking_number) {
-            $track = Gateway::where('tracking_number', $this->tracking_number)->pluck('id');
+            $track = Gateway::where('tracking_number','like', '%'. $this->tracking_number.'%')->pluck('id');
             $payment = $payment->whereIn('gateway_id', $track);
         }
         if ($this->order_id) {
-            $track = Gateway::where('systemTraceAuditNumber', $this->order_id)->pluck('id');
+            $track = Gateway::where('systemTraceAuditNumber', 'like', '%'.$this->order_id.'%')->pluck('id');
             $payment = $payment->whereIn('gateway_id', $track);
         }
         if ($this->factor_id) {
-            $track = Gateway::where('factor_number', $this->factor_id)->pluck('id');
+            $track = Gateway::where('factor_number','like', '%'. $this->factor_id.'%')->pluck('id');
             $payment = $payment->whereIn('gateway_id', $track);
         }
         if ($this->payment_type) {

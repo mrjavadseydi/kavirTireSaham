@@ -10,9 +10,13 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function payment(Request $request)
-    {
-        if ($request->responseCode == '00') {
+    public function payment(Request $request){
+        if ($request->responseCode != '00') {
+            return view('faild', [
+                'track' => $request->paymentId,
+                'token' => $request->token
+            ]);
+        } else {
             $gateway = Gateway::where([
                 [
                     'token', $request->token
@@ -27,7 +31,12 @@ class PaymentController extends Controller
                     'status', 0
                 ]
             ])->first();
-            if ($gateway) {
+            if (!$gateway) {
+                return view('faild', [
+                    'track' => $request->paymentId,
+                    'token' => $request->token
+                ]);
+            } else {
                 $gateway->update([
                     'systemTraceAuditNumber' => $request->systemTraceAuditNumber
                 ]);
@@ -35,7 +44,7 @@ class PaymentController extends Controller
 
                 if ($result['responseCode'] != '00') {
                     $gateway->update([
-                        'status' => $result['responseCode']
+                        'status' =>0
                     ]);
                     return view('faild', [
                         'track' => $request->paymentId,
@@ -47,32 +56,27 @@ class PaymentController extends Controller
                 $gateway->update([
                     'status' => 1,
                 ]);
-                if ($gateway->type == 0) {
+                if($gateway->type==0){
                     Payment::create([
                         'account_id' => $account->id,
                         'gateway_id' => $gateway->id,
                         'local_pay' => $account->current_stock * 1000,
                     ]);
-                } elseif ($gateway->type == 1) {
+                }elseif($gateway->type == 1){
                     SelfReport::create([
                         'account_id' => $account->id,
                         'gateway_id' => $gateway->id,
-                        'count' => $gateway->gateway_amount / 1000
+                        'count' =>$gateway->gateway_amount/1000
                     ]);
-                } elseif ($gateway->type == 2) {
-                    Payment::where('account_id', $account->id)->update([
-                        'gateway_id' => $gateway->id
+                }elseif($gateway->type == 2){
+                    Payment::where('account_id',$account->id)->update([
+                        'gateway_id'=>$gateway->id
                     ]);
                 }
+
                 session(['payment' => 'success']);
-                return redirect(route('user.panel'));
+                return redirect(\route('user.panel'));
             }
         }
-
-        return view('faild', [
-            'track' => $request->paymentId,
-            'token' => $request->token
-        ]);
-
     }
 }

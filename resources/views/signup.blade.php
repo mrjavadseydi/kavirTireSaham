@@ -16,11 +16,6 @@
                 <span class="label-input100">نام خانوادگی</span>
             </div>
             <div class="wrap-input100 validate-input" >
-                <input class="input100" wire:model.lazy="certificate">
-                <span class="focus-input100"></span>
-                <span class="label-input100">کد سهامدار</span>
-            </div>
-            <div class="wrap-input100 validate-input" >
                 <input class="input100" wire:model.lazy="father">
                 <span class="focus-input100"></span>
                 <span class="label-input100">نام پدر</span>

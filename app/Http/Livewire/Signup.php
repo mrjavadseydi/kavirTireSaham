@@ -12,14 +12,12 @@ class Signup extends Component
     public function signup(){
 //        return $this->render();
         if($this->signup_step==1){
-            if(empty($this->fname)||empty($this->lname)||empty($this->certificate)||!is_numeric($this->certificate)||empty($this->father)||empty($this->nat_id)||strlen($this->nat_id)!=10){
+            if(empty($this->fname)||empty($this->lname)||empty($this->father)||empty($this->nat_id)||strlen($this->nat_id)!=10){
                 $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'لطفا با دقت تمامی فیلد هارا تکمیل کنید ']);
             }else{
-                if (Account::where('national_id',$this->nat_id)->orWhere('certificate',$this->certificate)->first()) {
-                    $this->dispatchBrowserEvent('toast', ['type' => 'error', 'msg' => 'حساب شما از قبل وجود دارد ']);
-                }else{
+                
                     $this->signup_step++;
-                }
+                
             }
         }elseif ($this->signup_step==2){
             if(empty($this->phone)||empty($this->mobile)||empty($this->st_num)||!is_numeric($this->st_num)||empty($this->st_alp)){
@@ -41,8 +39,8 @@ class Signup extends Component
                     'has_login'=>true,
                     'last_login'=>date('Y-m-d H:i:s'),
                     'last_ip'=>request()->ip(),
-                    'certificate'=>$this->certificate,
                     'first_name'=>$this->fname,
+                    'certificate'=>rand(0,99999),
                     'last_name'=>$this->lname,
                     'father_name'=>$this->father,
                     'certificate_id'=>$this->cert_id,

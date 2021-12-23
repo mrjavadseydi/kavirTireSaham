@@ -24,22 +24,23 @@ class Panel extends Component
     }
     public function filterAccounts($accounts){
         if ($this->stock_number) {
-            $accounts = $accounts->where('stock_number', $this->stock_number);
+            $accounts = $accounts->where('stock_number','like', '%'.$this->stock_number.'%');
         }
+
         if ($this->stock_alpha) {
-            $accounts = $accounts->where('stock_alpha', $this->stock_alpha);
+            $accounts = $accounts->where('stock_alpha','like', '%'. $this->stock_alpha.'%');
         }
         if ($this->national_id) {
-            $accounts = $accounts->where('national_id', $this->national_id);
+            $accounts = $accounts->where('national_id', 'like', '%'.$this->national_id.'%');
         }
         if ($this->mobile) {
-            $accounts = $accounts->where('mobile', $this->mobile);
+            $accounts = $accounts->where('mobile','like', '%'. $this->mobile.'%');
         }
         if ($this->phone) {
-            $accounts = $accounts->where('phone', $this->phone);
+            $accounts = $accounts->where('phone','like', '%'. $this->phone.'%');
         }
         if ($this->certificate_id) {
-            $accounts = $accounts->where('certificate_id', $this->certificate_id);
+            $accounts = $accounts->where('certificate_id', 'like', '%'.$this->certificate_id.'%');
         }
         if ($this->payment_type) {
             switch ($this->payment_type) {
@@ -62,8 +63,9 @@ class Panel extends Component
             }
         }
         if ($this->excel!==null) {
+            Cache::put('accountsExport',$accounts->get());
             $name = uniqid().time().".xlsx";
-            Excel::store(new AccountExport($accounts->get()),$name,'public_html');
+            Excel::store(new AccountExport(),$name,'public_html');
             $this->redirect(asset("exports/".$name));
         }
         return $accounts;

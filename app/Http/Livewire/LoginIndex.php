@@ -44,7 +44,7 @@ class LoginIndex extends Component
             if (!$this->stock_alpha) {
                 $this->alert();
             } else {
-                $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', $this->stock_alpha]])->get();
+                $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"]])->get();
                 $this->step++;
                 foreach ($this->accounts as $account) {
                     $this->meta['name'][] = [
@@ -67,7 +67,7 @@ class LoginIndex extends Component
                 $this->alert();
             } else {
                 $this->step++;
-                $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', $this->stock_alpha], ['id', $this->account_id]])->first();
+                $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id]])->first();
                 if ($this->accounts) {
                     if ($this->accounts->certificate_id != 0) {
                         $this->msg = "شماره شناسنامه خود را انتخاب کنید";
@@ -99,9 +99,9 @@ class LoginIndex extends Component
             } else {
 
                 if ($this->how == "cert_id") {
-                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', $this->stock_alpha], ['id', $this->account_id], ['certificate_id', 'like', $this->cert]])->first();
+                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id], ['certificate_id', 'like', $this->cert]])->first();
                 } else {
-                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', $this->stock_alpha], ['id', $this->account_id], ['father_name', 'like', $this->cert]])->first();
+                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id], ['father_name', 'like', $this->cert]])->first();
                 }
                 if ($this->accounts) {
                     $ac = $this->accounts;

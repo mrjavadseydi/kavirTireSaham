@@ -46,7 +46,7 @@ class paymentsExport implements FromArray, WithHeadings
                 $payment->account->first_name . " " . $payment->account->last_name,
                 $payment->account->national_id,
                 $pay_type,
-                Jalalian::fromCarbon(new Carbon($payment->created_at))->format('Y/m/d H:i'),
+                Jalalian::fromCarbon(new Carbon($payment->updated_at))->format('Y/m/d H:i'),
                 number_format($payment->local_pay),
                 $amount,
                 $tracking,

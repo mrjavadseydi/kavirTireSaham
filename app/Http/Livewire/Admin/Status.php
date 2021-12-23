@@ -26,10 +26,11 @@ class Status extends Component
         $this->total_gateway = Gateway::where('status',1)->sum('gateway_amount');
         $this->local_pay = Payment::sum('local_pay');
         $this->canceled = Payment::where([['local_pay',null],['gateway_id',null]])->count();
-        $before = Carbon::now()->subDay();
+        $before = Carbon::now()->startOfDay();
         $this->today_login = Account::where('last_login',">",$before)->count();
         $this->today_local = Payment::where('created_at','>',$before)->sum('local_pay');
-        $this->today_gateway = Gateway::where([['created_at','>',$before],['status',1]])->sum('gateway_amount');
+        $this->today_gateway = Gateway::where([['updated_at','>',$before],['status',1]])->sum('gateway_amount');
+
         $this->sings_up = Account::where('sign_up',true)->count();
         $this->today_sings_up = Account::where([['sign_up',true],['created_at','>',$before]])->count();
 

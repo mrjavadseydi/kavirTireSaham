@@ -27,10 +27,12 @@ Route::prefix('panel')->middleware('AcoountLogin')->group(function () {
     Route::get('/self-report',\App\Http\Livewire\User\SelfReport::class)->name('user.report');
     Route::get('/print',function (){
         $account = session('account');
+        $account->sign_up == 1 ? abort(403):'';
         return view('print',compact('account'));
     })->name('print');
     Route::get('/print-resid',function (){
         $account = session('account');
+        $account->sign_up == 1 ? abort(403):'';
         $payment = Payment::where('account_id',$account['id'])->first();
         return view('livewire.user.print',compact('account','payment'));
     })->name('print-resid');
