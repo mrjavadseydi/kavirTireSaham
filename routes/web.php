@@ -48,6 +48,7 @@ Route::middleware('auth')->prefix('admin')->group(function (){
     Route::get('/users',\App\Http\Livewire\Admin\Panel::class)->name('admin.users');
     Route::get('/self-report',\App\Http\Livewire\Admin\SelfReport::class)->name('admin.self-report');
     Route::get('/pay',\App\Http\Livewire\Admin\Pay::class)->name('admin.paylist');
+    Route::get('/gateway',\App\Http\Livewire\Admin\Gateway::class)->name('admin.gateway');
 });
 Route::view('print','print');
 //Route::view('log')

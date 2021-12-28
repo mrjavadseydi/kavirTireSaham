@@ -122,6 +122,12 @@
                         <span class="title">خوداظهاری</span>
                     </a>
                 </li>
+                <li class="">
+                    <a href="{{route('admin.gateway')}}" class="sidebarItem">
+                        <i class="fa fa-save"></i>
+                        <span class="title">گزارش درگاه</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
