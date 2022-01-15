@@ -97,11 +97,10 @@ class LoginIndex extends Component
             if (!$this->cert) {
                 $this->alert();
             } else {
-
                 if ($this->how == "cert_id") {
-                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id], ['certificate_id', 'like', $this->cert]])->first();
+                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id], ['certificate_id', 'like', "%".$this->cert."%"]])->first();
                 } else {
-                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id], ['father_name', 'like', $this->cert]])->first();
+                    $this->accounts = Account::where([['stock_number', $this->stock_number], ['stock_alpha', 'like', "%".$this->stock_alpha."%"], ['id', $this->account_id], ['father_name', 'like',  "%".$this->cert."%"]])->first();
                 }
                 if ($this->accounts) {
                     $ac = $this->accounts;

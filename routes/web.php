@@ -55,6 +55,6 @@ Route::view('print','print');
 Route::get('/log',function (){
 //    \Illuminate\Support\Facades\Artisan::call('migrate');
 //    session(['account'=>\App\Models\Account::whereId(44578)->first()]);
-    session(['account'=>\App\Models\Account::whereId(35444)->first()]);
+    session(['account'=>\App\Models\Account::whereId(35434)->first()]);
     return redirect(url('/panel'));
 });

@@ -24,7 +24,13 @@
                     {{$token==null?"وضعیت حق تقدم":"ورود به درگاه پرداخت"}}
                 </h2>
             </header>
-            <div class="content-body">
+            <div class="content-body" wire:loading>
+{{--                <livewire:loading/>--}}
+                @livewire('loading')
+            </div>
+
+
+            <div wire:loading.remove class="content-body">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         @if (session()->has('payment')&&session()->get('payment')=="success")
@@ -332,9 +338,9 @@
 
                                 <div class="text-center ">
                                     <div style="display: flex;align-content: center;align-items: center">
-                                        <input style="width: 40%;margin: 0 auto;min-width: 104px"
-                                               class="form-control  @error('shaba') has-error @enderror "
-                                               wire:model.lazy="shaba" placeholder="شماره شبا">
+                                        <input style="width: 40%;margin: 0 auto;min-width: 104px" wire:ignore
+                                               class="form-control   @error('shaba') has-error @enderror "
+                                               wire:model.debounce.100000000ms="shaba" placeholder="شماره شبا">
                                     </div>
                                     <div>
                                         <button class="btn btn-danger" wire:click="cancelMe">

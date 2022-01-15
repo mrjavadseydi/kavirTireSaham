@@ -23,63 +23,84 @@ class Panel extends Component
 
     public function getSecondToken()
     {
-        $orderId = time().rand(0,9999);
-        $factor_number = uniqid();
-        $gateWay = getIranKishToken($this->account->withdraw,$orderId,$factor_number);
-        Gateway::create([
-            'account_id'=>$this->account->id,
-            'gateway_amount'=>$this->account->withdraw,
-            'token'=>$gateWay['result']['token'],
-            'tracking_number'=>$orderId,
-            'status'=>0,
-            'factor_number'=>$factor_number,
-            'type'=>2
-        ]);
-        $this->token = $gateWay['result']['token'];
-        $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'دکمه ورود به درگاه را انتخاب کنید']);
+        if($this->HavePayments()){
+            $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'وضعیت حق تقدم از قبل ثبت شده !']);
+
+        }else {
+            $orderId = time() . rand(0, 9999);
+            $factor_number = uniqid();
+            $gateWay = getIranKishToken($this->account->withdraw, $orderId, $factor_number);
+            Gateway::create([
+                'account_id' => $this->account->id,
+                'gateway_amount' => $this->account->withdraw,
+                'token' => $gateWay['result']['token'],
+                'tracking_number' => $orderId,
+                'status' => 0,
+                'factor_number' => $factor_number,
+                'type' => 2
+            ]);
+            $this->token = $gateWay['result']['token'];
+            $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'دکمه ورود به درگاه را انتخاب کنید']);
+        }
     }
     public function getToken(){
-        /*
-         * پرداخت از طریق مطالبات و اورده نقدی
-         * پرداخت از طرق مطالبات
-         * تمایل به استفاده از حق تقدم ندارم
-         */
-        $orderId = time().rand(0,9999);
-        $factor_number = uniqid();
-        $gateWay = getIranKishToken($this->account->withdraw,$orderId,$factor_number);
-        Gateway::create([
-            'account_id'=>$this->account->id,
-            'gateway_amount'=>$this->account->withdraw,
-            'token'=>$gateWay['result']['token'],
-            'tracking_number'=>$orderId,
-            'status'=>0,
-            'factor_number'=>$factor_number
-        ]);
-        $this->token = $gateWay['result']['token'];
-        $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'دکمه ورود به درگاه را انتخاب کنید']);
-
+        if($this->HavePayments()){
+            $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'وضعیت حق تقدم از قبل ثبت شده !']);
+        }else {
+            $orderId = time() . rand(0, 9999);
+            $factor_number = uniqid();
+            $gateWay = getIranKishToken($this->account->withdraw, $orderId, $factor_number);
+            Gateway::create([
+                'account_id' => $this->account->id,
+                'gateway_amount' => $this->account->withdraw,
+                'token' => $gateWay['result']['token'],
+                'tracking_number' => $orderId,
+                'status' => 0,
+                'factor_number' => $factor_number
+            ]);
+            $this->token = $gateWay['result']['token'];
+            $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'دکمه ورود به درگاه را انتخاب کنید']);
+        }
     }
     public function OnlyWallet(){
+        if($this->HavePayments()){
+            $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'وضعیت حق تقدم از قبل ثبت شده !']);
+
+
+        }else {
             Payment::create([
-                'account_id'=>$this->account->id,
-                'gateway_id'=>null,
-                'local_pay'=>$this->account->current_stock*1000,
+                'account_id' => $this->account->id,
+                'gateway_id' => null,
+                'local_pay' => $this->account->current_stock * 1000,
             ]);
-           return $this->redirect(route('user.panel'));
+            return $this->redirect(route('user.panel'));
+        }
     }
 
     public function cancelMe()
     {
-        $data = $this->validate([
-            'shaba'=>'required|starts_with:IR,ir,Ir|size:26'
-        ]);
-        Payment::create([
-            'account_id'=>$this->account->id,
-            'gateway_id'=>null,
-            'local_pay'=>null,
-            'shaba'=>$data['shaba']
-        ]);
-        return $this->redirect(route('user.panel'));
+        if($this->HavePayments()){
+            $this->dispatchBrowserEvent('toast', ['type' => 'info', 'msg' => 'وضعیت حق تقدم از قبل ثبت شده !']);
+
+
+        }else{
+            $data = $this->validate([
+                'shaba'=>'required|starts_with:IR,ir,Ir|size:26'
+            ]);
+            Payment::create([
+                'account_id'=>$this->account->id,
+                'gateway_id'=>null,
+                'local_pay'=>null,
+                'shaba'=>$data['shaba']
+            ]);
+            return $this->redirect(route('user.panel'));
+        }
+
+    }
+
+    public function HavePayments(): bool
+    {
+        return (bool)Payment::where('account_id', $this->account['id'])->first();
     }
 
     public function render()
